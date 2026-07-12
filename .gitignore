@@ -1,3 +1,6 @@
+# Local env (not committed) — POC auto-login credentials
+.env.local
+
 # Miscellaneous
 *.class
 *.log
