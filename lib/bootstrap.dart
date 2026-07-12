@@ -12,6 +12,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env.staging');
+  try {
+    await dotenv.load(fileName: '.env.local', mergeWith: dotenv.env);
+  } on Object catch (error, stackTrace) {
+    log('No .env.local found, skipping default credentials.',
+        error: error, stackTrace: stackTrace);
+  }
   RealtimeServiceFactory.registerLifecycleDisposal(widgetsBinding);
 
   runApp(await builder());
