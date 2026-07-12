@@ -41,6 +41,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.1"
+  auth:
+    dependency: "direct main"
+    description:
+      path: "packages/auth"
+      ref: "21541d1c1106f9b241ecb883b1cd45b186b734b8"
+      resolved-ref: "21541d1c1106f9b241ecb883b1cd45b186b734b8"
+      url: "https://github.com/SyncrowIOT/frontend-microservices.git"
+    source: git
+    version: "1.0.0"
   bloc:
     dependency: "direct main"
     description:
