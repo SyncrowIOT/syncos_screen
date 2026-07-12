@@ -1,5 +1,5 @@
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/utils/resource_manager/color_manager.dart';
 
 class PowerClampFailureState extends StatelessWidget {
   const PowerClampFailureState({
@@ -19,21 +19,21 @@ class PowerClampFailureState extends StatelessWidget {
           spacing: 16,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildTitle(),
-            _buildErrorMessage(),
-            _buildRetryButton(),
+            _buildTitle(context),
+            _buildErrorMessage(context),
+            _buildRetryButton(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTitle() {
-    return const Text(
+  Widget _buildTitle(BuildContext context) {
+    return  Text(
       'Failed to Load Data',
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: ColorsManager.red,
+        color: context.appTheme.colors.text.danger,
         fontSize: 20,
         fontWeight: FontWeight.w600,
         height: 1.2,
@@ -41,17 +41,17 @@ class PowerClampFailureState extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorMessage() {
+  Widget _buildErrorMessage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Text(
         message.isNotEmpty
             ? message
             : "We couldn't load the energy consumption data.\n"
-                'Please try again.',
+                  'Please try again.',
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: ColorsManager.red.withValues(alpha: 0.8),
+          color: context.appTheme.colors.text.danger,
           fontSize: 14,
           fontWeight: FontWeight.w400,
           height: 1.4,
@@ -60,13 +60,13 @@ class PowerClampFailureState extends StatelessWidget {
     );
   }
 
-  Widget _buildRetryButton() {
+  Widget _buildRetryButton(BuildContext context) {
     return TextButton.icon(
       onPressed: onRetry,
       icon: const Icon(Icons.refresh_rounded),
       label: const Text('Retry'),
       style: TextButton.styleFrom(
-        foregroundColor: ColorsManager.red,
+        foregroundColor:context.appTheme.colors.text.danger,
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:syncos_screen/common/widgets/date_selector.dart';
+import 'package:syncos_screen/widgets/date_selector.dart';
 
 class MonthYearSelector extends StatelessWidget {
   MonthYearSelector({

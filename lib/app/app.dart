@@ -11,6 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = AppTheme.light();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: appTheme.colors.text.brand,
@@ -27,7 +28,7 @@ class App extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: const PowerClampPage(
         device: Device(
-          uuid: 'REPLACE_WITH_DEVICE_UUID',
+          uuid: '6b54c0d5-906e-4836-b63c-de96b515c640',
           name: 'Power Clamp',
           productType: ProductType.powerClamp,
           productUuid: '',

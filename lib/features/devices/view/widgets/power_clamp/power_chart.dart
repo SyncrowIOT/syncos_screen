@@ -1,6 +1,6 @@
+import 'package:design_system/design_system.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/utils/resource_manager/color_manager.dart';
 
 class EnergyConsumptionChart extends StatefulWidget {
   const EnergyConsumptionChart({
@@ -40,22 +40,22 @@ class _EnergyConsumptionChartState extends State<EnergyConsumptionChart> {
           getTouchLineEnd: (barData, spotIndex) => 10.0,
           touchTooltipData: LineTouchTooltipData(
             getTooltipColor: (touchTooltipItem) {
-              return ColorsManager.whiteColor;
+              return context.appTheme.colors.background.neutralPrimary;
             },
             tooltipPadding: const EdgeInsets.symmetric(
               horizontal: 10,
               vertical: 8,
             ),
-            tooltipBorder: const BorderSide(
-              color: ColorsManager.greyColor,
+            tooltipBorder: BorderSide(
+              color: context.appTheme.colors.text.bodySubtle,
             ),
             tooltipBorderRadius: BorderRadius.circular(12),
             getTooltipItems: (touchedSpots) {
               return touchedSpots.map((spot) {
                 return LineTooltipItem(
                   '${spot.x},\n ${spot.y.toStringAsFixed(2)} kWh',
-                  const TextStyle(
-                    color: ColorsManager.blueColor1,
+                  TextStyle(
+                    color: context.appTheme.colors.text.brand,
                     fontWeight: FontWeight.w400,
                     fontSize: 9,
                   ),
@@ -98,15 +98,8 @@ class _EnergyConsumptionChartState extends State<EnergyConsumptionChart> {
           verticalInterval: 1,
           getDrawingVerticalLine: (value) {
             return FlLine(
-              color: Colors.grey.withValues(alpha: 0.2),
+              color: context.appTheme.colors.text.bodySubtle.withAlpha(100),
               dashArray: [8, 8],
-              strokeWidth: 1,
-            );
-          },
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Colors.grey.withValues(alpha: 0.2),
-              dashArray: [5, 5],
               strokeWidth: 1,
             );
           },
@@ -128,13 +121,14 @@ class _EnergyConsumptionChartState extends State<EnergyConsumptionChart> {
                 )
                 .toList(),
             isCurved: true,
-            color: ColorsManager.chart.withValues(alpha: 0.6),
+            color: context.appTheme.colors.text.brand,
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(
                 colors: [
-                  ColorsManager.chart.withValues(alpha: 0.9),
-                  ColorsManager.greyColor.withValues(alpha: 0),
+                  context.appTheme.colors.text.brandSoft,
+                  context.appTheme.colors.text.brandSofter,
+                  context.appTheme.colors.background.neutralPrimary,
                 ],
                 begin: Alignment.center,
                 end: Alignment.bottomCenter,

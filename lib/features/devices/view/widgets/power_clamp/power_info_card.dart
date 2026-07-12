@@ -1,8 +1,7 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:syncos_screen/features/shared_widgets/default_container.dart';
-import 'package:syncos_screen/utils/resource_manager/color_manager.dart';
+import 'package:syncos_screen/widgets/default_container.dart';
 
 class PowerClampInfoCard extends StatelessWidget {
   const PowerClampInfoCard({
@@ -23,7 +22,7 @@ class PowerClampInfoCard extends StatelessWidget {
     return Expanded(
       child: DefaultContainer(
         height: 55,
-        color: ColorsManager.grayBox,
+        color: context.appTheme.colors.background.neutralSecondary,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -56,7 +55,7 @@ class PowerClampInfoCard extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

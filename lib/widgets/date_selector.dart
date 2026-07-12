@@ -1,5 +1,5 @@
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/utils/resource_manager/color_manager.dart';
 
 class DateSelector extends StatelessWidget {
   const DateSelector({
@@ -21,7 +21,7 @@ class DateSelector extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
-        color: ColorsManager.grayBox,
+        color: context.appTheme.colors.background.neutralSecondary,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -33,39 +33,37 @@ class DateSelector extends StatelessWidget {
             icon: Icon(
               Icons.arrow_back_ios,
               color: canDecrement
-                  ? ColorsManager.blackColor
-                  : ColorsManager.greyColor,
+                  ? context.appTheme.colors.text.title
+                  : context.appTheme.colors.text.bodySubtle,
             ),
             onPressed: canDecrement ? onDecrement : null,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             iconSize: 20,
             color: canDecrement
-                ? ColorsManager.grayColor
-                : ColorsManager.greyColor,
+                ? context.appTheme.colors.text.title
+                : context.appTheme.colors.text.bodySubtle,
           ),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: ColorsManager.blackColor,
+            style: context.appTheme.typography.body.medium.copyWith(
+              color: context.appTheme.colors.text.title,
             ),
           ),
           IconButton(
             icon: Icon(
               Icons.arrow_forward_ios,
               color: canIncrement
-                  ? ColorsManager.blackColor
-                  : ColorsManager.greyColor,
+                  ? context.appTheme.colors.text.body
+                  : context.appTheme.colors.text.bodySubtle,
             ),
             onPressed: canIncrement ? onIncrement : null,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             iconSize: 20,
             color: canIncrement
-                ? ColorsManager.grayColor
-                : ColorsManager.greyColor,
+                ? context.appTheme.colors.text.body
+                : context.appTheme.colors.text.bodySubtle,
           ),
         ],
       ),

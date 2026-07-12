@@ -1,7 +1,7 @@
 import 'package:networking/networking.dart';
-import 'package:syncos_screen/secure_storage.dart';
 import 'package:syncos_screen/services/api/auth_session_memory.dart';
-import 'package:syncos_screen/utils/helpers/keychain_retry_helper.dart';
+import 'package:syncos_screen/utils/keychain_retry_helper.dart';
+import 'package:syncos_screen/utils/secure_storage.dart';
 
 final class SecureTokenStore implements TokenStore {
   @override

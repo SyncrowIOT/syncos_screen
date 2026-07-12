@@ -1,5 +1,5 @@
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/utils/resource_manager/color_manager.dart';
 
 class DefaultContainer extends StatelessWidget {
   const DefaultContainer({
@@ -7,7 +7,7 @@ class DefaultContainer extends StatelessWidget {
     super.key,
     this.height,
     this.width,
-    this.color = ColorsManager.whiteColor,
+    this.color,
     this.boxConstraints,
     this.margin = const EdgeInsets.only(right: 3, bottom: 3),
     this.padding = const EdgeInsets.all(10),
@@ -21,7 +21,7 @@ class DefaultContainer extends StatelessWidget {
   final BoxConstraints? boxConstraints;
   final EdgeInsets margin;
   final EdgeInsets padding;
-  final Color color;
+  final Color? color;
   final void Function()? onTap;
   final BorderRadius borderRadius;
 
@@ -30,7 +30,7 @@ class DefaultContainer extends StatelessWidget {
     return Material(
       type: MaterialType.card,
       borderRadius: borderRadius,
-      color: color,
+      color: color ?? context.appTheme.colors.background.neutralPrimary,
       child: InkWell(
         onTap: onTap,
         borderRadius: borderRadius,

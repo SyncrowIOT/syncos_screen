@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:syncos_screen/secure_storage.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/auth_session_memory.dart';
-import 'package:syncos_screen/utils/helpers/keychain_retry_helper.dart';
+import 'package:syncos_screen/utils/keychain_retry_helper.dart';
+import 'package:syncos_screen/utils/secure_storage.dart';
 
 class HTTPInterceptor extends InterceptorsWrapper {
   List<String> headerExclusionList = [];
@@ -119,8 +119,7 @@ class HTTPInterceptor extends InterceptorsWrapper {
 
     final root = Map<String, dynamic>.from(value);
     final rawData = root['data'];
-    final tokenData =
-        rawData is Map ? Map<String, dynamic>.from(rawData) : root;
+    final tokenData = rawData is Map ? Map<String, dynamic>.from(rawData) : root;
     final accessToken = tokenData['access_token'];
     final refreshToken = tokenData['refresh_token'];
 

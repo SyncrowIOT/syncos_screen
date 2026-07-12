@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_info_card.dart';
-import 'package:syncos_screen/generated/assets.dart';
+import 'package:syncos_screen/utils/assets.dart';
 
 class PhaseMetricsSection extends StatelessWidget {
   const PhaseMetricsSection({

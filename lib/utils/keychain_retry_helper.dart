@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
-import 'package:syncos_screen/secure_storage.dart';
+import 'package:syncos_screen/utils/secure_storage.dart';
 
 class KeychainRetryHelper {
   static Future<T> retryKeychainOperation<T>(

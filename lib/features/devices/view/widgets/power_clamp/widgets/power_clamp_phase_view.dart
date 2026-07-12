@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
-import 'package:syncos_screen/common/widgets/month_year_selector.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/consumption_info_section.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/energy_consumption_header.dart';
@@ -12,7 +11,8 @@ import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_chart_section.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_empty_state.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_failure_state.dart';
-import 'package:syncos_screen/features/shared_widgets/default_container.dart';
+import 'package:syncos_screen/widgets/default_container.dart';
+import 'package:syncos_screen/widgets/month_year_selector.dart';
 
 class PowerClampPhaseView extends StatefulWidget {
   const PowerClampPhaseView({
@@ -65,13 +65,13 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
     final monthDate = DateTime(selectedDate.year, selectedDate.month);
 
     context.read<PowerClampDeviceHistoryBloc>().add(
-          LoadPowerClampDeviceHistoryEvent(
-            GetPowerClampDeviceHistoryParam(
-              deviceUuid: widget.deviceUuid,
-              monthDate: monthDate,
-            ),
-          ),
-        );
+      LoadPowerClampDeviceHistoryEvent(
+        GetPowerClampDeviceHistoryParam(
+          deviceUuid: widget.deviceUuid,
+          monthDate: monthDate,
+        ),
+      ),
+    );
   }
 
   String _getDateRange() {
@@ -156,33 +156,34 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
             ValueListenableBuilder<DateTime>(
               valueListenable: widget.selectedDateNotifier,
               builder: (context, selectedDate, _) {
-                return BlocBuilder<PowerClampDeviceHistoryBloc,
-                    PowerClampDeviceHistoryState>(
+                return BlocBuilder<
+                  PowerClampDeviceHistoryBloc,
+                  PowerClampDeviceHistoryState
+                >(
                   builder: (context, state) {
                     return switch (state) {
                       PowerClampDeviceHistoryLoading() => const Expanded(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
+                      ),
                       PowerClampDeviceHistoryFailure(:final errorMessage) =>
                         PowerClampFailureState(
                           message: errorMessage,
                           onRetry: _fetchHistoryData,
                         ),
                       PowerClampDeviceHistoryLoaded() => () {
-                          final displayData =
-                              _convertHistoryToEnergyData(state);
+                        final displayData = _convertHistoryToEnergyData(state);
 
-                          if (displayData.isEmpty) {
-                            return const PowerClampEmptyState();
-                          }
+                        if (displayData.isEmpty) {
+                          return const PowerClampEmptyState();
+                        }
 
-                          return PowerClampChartSection(
-                            chartData: displayData,
-                            selectedDate: selectedDate,
-                          );
-                        }(),
+                        return PowerClampChartSection(
+                          chartData: displayData,
+                          selectedDate: selectedDate,
+                        );
+                      }(),
                       _ => const PowerClampEmptyState(),
                     };
                   },

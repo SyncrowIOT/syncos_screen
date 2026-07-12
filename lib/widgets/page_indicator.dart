@@ -1,5 +1,5 @@
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/utils/resource_manager/color_manager.dart';
 
 class PageIndicator extends StatelessWidget {
   const PageIndicator({
@@ -40,8 +40,8 @@ class PageIndicator extends StatelessWidget {
                 width: dotSize ?? 10,
                 decoration: BoxDecoration(
                   color: currentPage == index
-                      ? (activeColor ?? Colors.grey)
-                      : (inactiveColor ?? ColorsManager.greyColor),
+                      ? (activeColor ?? context.appTheme.colors.text.title)
+                      : (inactiveColor ?? context.appTheme.colors.text.bodySubtle),
                   borderRadius: BorderRadius.circular((dotSize ?? 10) / 2),
                 ),
               );

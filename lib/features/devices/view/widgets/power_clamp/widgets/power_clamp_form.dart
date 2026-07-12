@@ -2,9 +2,9 @@ import 'package:device_manager/device_manager.dart';
 import 'package:devices/devices.dart' as devices_package;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncos_screen/common/widgets/page_indicator.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_phase_view.dart';
+import 'package:syncos_screen/widgets/page_indicator.dart';
 
 class PowerClampForm extends StatefulWidget {
   const PowerClampForm({required this.device, super.key});
@@ -35,8 +35,8 @@ class _PowerClampFormState extends State<PowerClampForm> {
   @override
   void dispose() {
     context.read<DevicesManagerBloc<PowerClampStatusModel>>().add(
-          const StopListeningEvent(),
-        );
+      const StopListeningEvent(),
+    );
     _pageController
       ..removeListener(_handlePageChange)
       ..dispose();
@@ -47,8 +47,10 @@ class _PowerClampFormState extends State<PowerClampForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DevicesManagerBloc<PowerClampStatusModel>,
-        DevicesManagerState<PowerClampStatusModel>>(
+    return BlocBuilder<
+      DevicesManagerBloc<PowerClampStatusModel>,
+      DevicesManagerState<PowerClampStatusModel>
+    >(
       builder: (context, state) {
         final powerClampModel = state.device;
 
