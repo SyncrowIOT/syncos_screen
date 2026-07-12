@@ -18,19 +18,16 @@ class SessionBootstrapper {
     Future<void> Function(Duration duration)? delay,
     this.maxLoginAttempts = 3,
     this.backoff = const [Duration(seconds: 2), Duration(seconds: 4)],
-  })  : // The public parameter name is part of this class's required API
-        // and can't carry a leading underscore, so it can't be an
-        // initializing formal for the private field it populates.
+  })  : // The public parameter names below are part of this class's
+        // required API and can't carry a leading underscore, so none of
+        // them can be initializing formals for the private fields they
+        // populate.
         // ignore: prefer_initializing_formals
         _tokenStore = tokenStore,
-        // The public parameter name is part of this class's required API
-        // and can't carry a leading underscore, so it can't be an
-        // initializing formal for the private field it populates.
+        // Same rationale as above.
         // ignore: prefer_initializing_formals
         _tokenRefreshService = tokenRefreshService,
-        // The public parameter name is part of this class's required API
-        // and can't carry a leading underscore, so it can't be an
-        // initializing formal for the private field it populates.
+        // Same rationale as above.
         // ignore: prefer_initializing_formals
         _loginService = loginService,
         _credentialsBuilder = credentialsBuilder ?? _defaultCredentials,
@@ -68,6 +65,11 @@ class SessionBootstrapper {
     final refresh = await _tokenStore.readRefreshToken();
     if (refresh == null || refresh.isEmpty) return false;
     try {
+      // Unlike _attemptLogin, we don't re-read TokenStore here: this is
+      // intentional, not an oversight. RemoteTokenRefreshService is
+      // pre-existing, already-trusted code that returns the token string
+      // directly and persists it internally, so it doesn't carry the same
+      // response-shape (snake_case-vs-camelCase) risk the login path does.
       await _tokenRefreshService.call();
       return true;
     } on Object {

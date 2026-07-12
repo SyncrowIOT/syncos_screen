@@ -35,6 +35,18 @@ _\*SyncOS Screen works on iOS, Android, Web, and Windows._
 
 ---
 
+## Local Environment Setup 🔑
+
+`.env.local` is declared as a Flutter asset (see `pubspec.yaml`), so it must exist on disk before building — Flutter's asset bundler fails the build if a declared asset file is missing. Copy the example file and fill in real POC credentials:
+
+```sh
+$ cp .env.local.example .env.local
+```
+
+`.env.local` is gitignored and provides default login credentials used by `SessionBootstrapper` for auto-login at startup.
+
+---
+
 ## Running Tests 🧪
 
 To run all unit and widget tests use the following command:
