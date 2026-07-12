@@ -15,6 +15,7 @@ final class DioClient {
 
   static Dio? _dio;
   static String? _projectUuid;
+  static RemoteTokenRefreshService? _tokenRefreshService;
 
   static final _tokenStore = SecureTokenStore();
 
@@ -24,6 +25,14 @@ final class DioClient {
       return existing;
     }
     return _makeDio();
+  }
+
+  /// The same [RemoteTokenRefreshService] instance used internally by the
+  /// HTTP 401-retry interceptor, exposed so other startup flows (e.g. a
+  /// session bootstrapper) share its in-flight-refresh dedup lock.
+  static RemoteTokenRefreshService get tokenRefreshService {
+    instance; // ensures _makeDio() has run and set _tokenRefreshService
+    return _tokenRefreshService!;
   }
 
   static Dio _makeDio() {
@@ -39,6 +48,12 @@ final class DioClient {
       ),
     );
     _dio = dio;
+    final tokenRefreshService = RemoteTokenRefreshService(
+      dio: dio,
+      tokenStore: _tokenStore,
+      refreshPath: ApiEndpoints.refreshToken,
+    );
+    _tokenRefreshService = tokenRefreshService;
     dio.interceptors.addAll([
       DioNetworkLogger(),
       ProjectUuidInterceptor(
@@ -51,11 +66,7 @@ final class DioClient {
         tokenStore: _tokenStore,
         refreshPath: ApiEndpoints.refreshToken,
         onRefreshFailed: () => onTokenRefreshFailed?.call(),
-        tokenRefreshService: RemoteTokenRefreshService(
-          dio: dio,
-          tokenStore: _tokenStore,
-          refreshPath: ApiEndpoints.refreshToken,
-        ),
+        tokenRefreshService: tokenRefreshService,
       ),
     ]);
     return dio;
