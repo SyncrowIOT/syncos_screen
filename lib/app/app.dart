@@ -1,8 +1,14 @@
+import 'package:auth/auth.dart';
 import 'package:design_system/design_system.dart';
 import 'package:devices/devices.dart';
 import 'package:flutter/material.dart';
+import 'package:syncos_screen/app/auth_gate.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_clamp_page.dart';
 import 'package:syncos_screen/l10n/l10n.dart';
+import 'package:syncos_screen/services/api/dio_client.dart';
+import 'package:syncos_screen/services/api/networking_service_factory.dart';
+import 'package:syncos_screen/services/api/secure_token_store.dart';
+import 'package:syncos_screen/services/auth/session_bootstrapper.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -26,18 +32,27 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const PowerClampPage(
-        device: Device(
-          uuid: '6b54c0d5-906e-4836-b63c-de96b515c640',
-          name: 'Power Clamp',
-          productType: ProductType.powerClamp,
-          productUuid: '',
-          productName: 'Power Clamp',
-          subspaceName: '',
-          subspaceUuid: '',
-          online: true,
-          icon: '',
-          spaces: [],
+      home: AuthGate(
+        ensureAuthenticated: SessionBootstrapper(
+          tokenStore: SecureTokenStore(),
+          tokenRefreshService: DioClient.tokenRefreshService,
+          loginService: RemoteLoginService(
+            networkingService: NetworkingServiceFactory.create(),
+          ),
+        ).ensureAuthenticated,
+        child: const PowerClampPage(
+          device: Device(
+            uuid: '6b54c0d5-906e-4836-b63c-de96b515c640',
+            name: 'Power Clamp',
+            productType: ProductType.powerClamp,
+            productUuid: '',
+            productName: 'Power Clamp',
+            subspaceName: '',
+            subspaceUuid: '',
+            online: true,
+            icon: '',
+            spaces: [],
+          ),
         ),
       ),
     );
