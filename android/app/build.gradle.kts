@@ -60,17 +60,17 @@ android {
         create("production") {
             dimension = "default"
             applicationIdSuffix = ""
-            manifestPlaceholders["appName"] = "Syncos Screen"
+            manifestPlaceholders["appName"] = "SyncOS Screen"
         }
         create("staging") {
             dimension = "default"
             applicationIdSuffix = ".stg"
-            manifestPlaceholders["appName"] = "[STG] Syncos Screen"
+            manifestPlaceholders["appName"] = "[STG] SyncOS Screen"
         }
         create("development") {
             dimension = "default"
             applicationIdSuffix = ".dev"
-            manifestPlaceholders["appName"] = "[DEV] Syncos Screen"
+            manifestPlaceholders["appName"] = "[DEV] SyncOS Screen"
         }
     }
 
