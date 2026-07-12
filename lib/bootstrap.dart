@@ -1,33 +1,18 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-
-class AppBlocObserver extends BlocObserver {
-  const AppBlocObserver();
-
-  @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    super.onChange(bloc, change);
-    log('onChange(${bloc.runtimeType}, $change)');
-  }
-
-  @override
-  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    log('onError(${bloc.runtimeType}, $error, $stackTrace)');
-    super.onError(bloc, error, stackTrace);
-  }
-}
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:syncos_screen/services/realtime/realtime_service_factory.dart';
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
-  Bloc.observer = const AppBlocObserver();
-
-  // Add cross-flavor configuration here
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env.staging');
+  RealtimeServiceFactory.registerLifecycleDisposal(widgetsBinding);
 
   runApp(await builder());
 }

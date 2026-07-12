@@ -9,12 +9,53 @@ environment:
 
 dependencies:
   bloc: ^9.2.1
+  collection: ^1.19.1
+  dio: ^5.9.2
+  equatable: ^2.0.8
+  fl_chart: ^1.2.0
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  flutter_dotenv: ^6.0.1
   flutter_localizations:
     sdk: flutter
+  flutter_secure_storage: ^10.2.0
+  flutter_svg: ^2.3.0
   intl: ^0.20.2
+  network_logger: ^1.0.4
+  shared_preferences: ^2.5.5
+  socket_io_client: ^3.1.4
+
+  devices:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/devices
+      ref: 21541d1c1106f9b241ecb883b1cd45b186b734b8
+  networking:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/networking
+      ref: 21541d1c1106f9b241ecb883b1cd45b186b734b8
+  device_manager:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/device_manager
+      ref: 21541d1c1106f9b241ecb883b1cd45b186b734b8
+  power_clamp_device_history:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/power_clamp_device_history
+      ref: 21541d1c1106f9b241ecb883b1cd45b186b734b8
+  socketio_client:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/socketio_client
+      ref: 21541d1c1106f9b241ecb883b1cd45b186b734b8
+  design_system:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/design_system
+      ref: 21541d1c1106f9b241ecb883b1cd45b186b734b8
 
 dev_dependencies:
   bloc_lint: ^0.4.1
@@ -28,3 +69,6 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - assets/icons/
+    - .env.staging
