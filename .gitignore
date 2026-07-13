@@ -1,5 +1,7 @@
-# Local env (not committed) — POC auto-login credentials
-.env.local
+# Local env (not committed) — POC auto-login credentials, one per flavor
+.env.local.development
+.env.local.staging
+.env.local.production
 
 # Miscellaneous
 *.class
@@ -118,3 +120,4 @@ app.*.map.json
 
 # Generated l10n files
 lib/l10n/gen/
+pubspec.lock

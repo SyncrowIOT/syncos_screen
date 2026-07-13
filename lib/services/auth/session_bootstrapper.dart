@@ -4,18 +4,15 @@ import 'package:syncos_screen/services/auth/env_config.dart';
 
 class SessionBootstrapper {
   SessionBootstrapper({
-    required TokenStore tokenStore,
-    required RemoteTokenRefreshService tokenRefreshService,
-    required LoginService loginService,
+    required this._tokenStore,
+    required this._tokenRefreshService,
+    required this._loginService,
     LoginParam Function()? credentialsBuilder,
     Future<void> Function(Duration duration)? delay,
     this.maxLoginAttempts = 3,
     this.backoff = const [Duration(seconds: 2), Duration(seconds: 4)],
-  })  : _tokenStore = tokenStore,
-        _tokenRefreshService = tokenRefreshService,
-        _loginService = loginService,
-        _credentialsBuilder = credentialsBuilder ?? _defaultCredentials,
-        _delay = delay ?? Future.delayed;
+  }) : _credentialsBuilder = credentialsBuilder ?? _defaultCredentials,
+       _delay = delay ?? Future.delayed;
 
   final TokenStore _tokenStore;
   final RemoteTokenRefreshService _tokenRefreshService;
@@ -28,10 +25,10 @@ class SessionBootstrapper {
   final List<Duration> backoff;
 
   static LoginParam _defaultCredentials() => LoginParam(
-        email: EnvConfig.defaultEmail,
-        password: EnvConfig.defaultPassword,
-        isMobilePlatform: true,
-      );
+    email: EnvConfig.defaultEmail,
+    password: EnvConfig.defaultPassword,
+    isMobilePlatform: true,
+  );
 
   Future<bool> ensureAuthenticated() async {
     if (await _trySilentRefresh()) return true;
@@ -54,8 +51,7 @@ class SessionBootstrapper {
       if (await _attemptLogin()) return true;
       final isLastAttempt = attempt == maxLoginAttempts - 1;
       if (!isLastAttempt) {
-        final delayIndex =
-            attempt < backoff.length ? attempt : backoff.length - 1;
+        final delayIndex = attempt < backoff.length ? attempt : backoff.length - 1;
         await _delay(backoff[delayIndex]);
       }
     }
