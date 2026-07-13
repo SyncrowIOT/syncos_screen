@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:network_logger/network_logger.dart';
 import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
@@ -45,7 +44,6 @@ abstract final class DioClient {
     );
     _tokenRefreshService = tokenRefreshService;
     dio.interceptors.addAll([
-      DioNetworkLogger(),
       ProjectUuidInterceptor(
         tokenStore: _tokenStore,
         projectUuidProvider: () async => _projectUuid,

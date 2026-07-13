@@ -1,4 +1,4 @@
-package com.example.verygoodcore.syncos_screen
+package com.syncrow.syncosscreen
 
 import io.flutter.embedding.android.FlutterActivity
 
