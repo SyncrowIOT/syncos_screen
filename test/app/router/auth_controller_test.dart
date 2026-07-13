@@ -42,6 +42,17 @@ void main() {
       expect(controller.status, AuthStatus.error);
     });
 
+    test('transitions to error when ensureAuthenticated throws', () async {
+      final controller = AuthController(
+        ensureAuthenticated: () async => throw Exception('boom'),
+      );
+      addTearDown(controller.dispose);
+
+      await Future<void>.delayed(Duration.zero);
+
+      expect(controller.status, AuthStatus.error);
+    });
+
     test('retry re-runs ensureAuthenticated and can recover from error',
         () async {
       var attempt = 0;

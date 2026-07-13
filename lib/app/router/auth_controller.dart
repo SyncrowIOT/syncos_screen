@@ -16,8 +16,12 @@ class AuthController extends ChangeNotifier {
   Future<void> _run() async {
     status = AuthStatus.loading;
     notifyListeners();
-    final ok = await _ensureAuthenticated();
-    status = ok ? AuthStatus.authenticated : AuthStatus.error;
+    try {
+      final ok = await _ensureAuthenticated();
+      status = ok ? AuthStatus.authenticated : AuthStatus.error;
+    } on Object {
+      status = AuthStatus.error;
+    }
     notifyListeners();
   }
 
