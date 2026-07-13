@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:syncos_screen/firebase_options.dart';
 import 'package:syncos_screen/services/realtime/realtime_service_factory.dart';
 
 Future<void> bootstrap(
@@ -14,6 +16,7 @@ Future<void> bootstrap(
   };
 
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: '.env.$environment');
   try {
     await dotenv.load(
