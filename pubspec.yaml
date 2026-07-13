@@ -61,6 +61,7 @@ dependencies:
       url: https://github.com/SyncrowIOT/frontend-microservices.git
       path: packages/auth
       ref: 21541d1c1106f9b241ecb883b1cd45b186b734b8
+  go_router: ^17.3.0
 
 dev_dependencies:
   bloc_lint: ^0.4.1
