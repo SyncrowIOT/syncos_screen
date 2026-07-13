@@ -37,7 +37,6 @@ void main() {
                 isMobilePlatform: true,
               ),
       delay: (duration) async => recordedDelays.add(duration),
-      backoff: const [Duration(seconds: 2), Duration(seconds: 4)],
     );
   }
 
