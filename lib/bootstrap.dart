@@ -16,15 +16,15 @@ Future<void> bootstrap(
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: '.env.$environment');
+  await dotenv.load(fileName: 'env/.env.$environment');
   try {
     await dotenv.load(
-      fileName: '.env.local.$environment',
+      fileName: 'env/.env.local.$environment',
       mergeWith: Map<String, String>.from(dotenv.env),
     );
   } on Object catch (error, stackTrace) {
     log(
-      'No .env.local.$environment found, skipping default credentials.',
+      'No env/.env.local.$environment found, skipping default credentials.',
       error: error,
       stackTrace: stackTrace,
     );

@@ -101,9 +101,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
-    - .env.development
-    - .env.staging
-    - .env.production
-    - .env.local.development
-    - .env.local.staging
-    - .env.local.production
+    - env/.env.development
+    - env/.env.staging
+    - env/.env.production
+    - env/.env.local.development
+    - env/.env.local.staging
+    - env/.env.local.production

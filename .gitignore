@@ -1,7 +1,7 @@
 # Local env (not committed) — POC auto-login credentials, one per flavor
-.env.local.development
-.env.local.staging
-.env.local.production
+env/.env.local.development
+env/.env.local.staging
+env/.env.local.production
 
 # Miscellaneous
 *.class
