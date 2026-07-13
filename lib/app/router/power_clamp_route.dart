@@ -7,8 +7,8 @@ import 'package:syncos_screen/features/devices/factories/device_manager_factory.
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_form.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
 
-class PowerClampView extends StatefulWidget {
-  const PowerClampView({
+class PowerClampRoute extends StatefulWidget {
+  const PowerClampRoute({
     required this.device,
     super.key,
   });
@@ -16,10 +16,10 @@ class PowerClampView extends StatefulWidget {
   final Device device;
 
   @override
-  State<PowerClampView> createState() => _PowerClampViewState();
+  State<PowerClampRoute> createState() => _PowerClampRouteState();
 }
 
-class _PowerClampViewState extends State<PowerClampView> {
+class _PowerClampRouteState extends State<PowerClampRoute> {
   late final Future<DevicesManagerBloc<PowerClampStatusModel>> _blocFuture;
 
   @override
