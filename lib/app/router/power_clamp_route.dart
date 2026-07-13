@@ -7,7 +7,7 @@ import 'package:syncos_screen/features/devices/factories/device_manager_factory.
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_form.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
 
-class PowerClampRoute extends StatefulWidget {
+class PowerClampRoute extends StatelessWidget {
   const PowerClampRoute({
     required this.device,
     super.key,
@@ -16,64 +16,38 @@ class PowerClampRoute extends StatefulWidget {
   final Device device;
 
   @override
-  State<PowerClampRoute> createState() => _PowerClampRouteState();
-}
-
-class _PowerClampRouteState extends State<PowerClampRoute> {
-  late final Future<DevicesManagerBloc<PowerClampStatusModel>> _blocFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _blocFuture = DeviceManagerFactory.create<PowerClampStatusModel>(
-      deviceUuid: widget.device.uuid,
-      fromStatusList: (id, jsonList) => PowerClampStatusModel.fromStatusList(
-        id,
-        jsonList,
-        widget.device.productType,
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DevicesManagerBloc<PowerClampStatusModel>>(
-      future: _blocFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        if (snapshot.hasError || !snapshot.hasData) {
-          return Scaffold(
-            body: Center(
-              child: Text(
-                snapshot.error?.toString() ?? 'Unable to connect',
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
-        }
-
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider.value(value: snapshot.data!),
-            BlocProvider(
-              create: (context) => PowerClampDeviceHistoryBloc(
-                powerClampDeviceHistoryService:
-                    DebouncedPowerClampDeviceHistoryService(
-                      RemotePowerClampDeviceHistoryService(
-                        networkService: NetworkingServiceFactory.create(),
-                      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final bloc = DeviceManagerFactory.create<PowerClampStatusModel>(
+              deviceUuid: device.uuid,
+              fromStatusList: (id, jsonList) {
+                return PowerClampStatusModel.fromStatusList(
+                  id,
+                  jsonList,
+                  device.productType,
+                );
+              },
+            )..add(const StartListeningEvent());
+            return bloc;
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return PowerClampDeviceHistoryBloc(
+              powerClampDeviceHistoryService:
+                  DebouncedPowerClampDeviceHistoryService(
+                    RemotePowerClampDeviceHistoryService(
+                      networkService: NetworkingServiceFactory.create(),
                     ),
-              ),
-            ),
-          ],
-          child: PowerClampForm(device: widget.device),
-        );
-      },
+                  ),
+            );
+          },
+        ),
+      ],
+      child: PowerClampForm(device: device),
     );
   }
 }

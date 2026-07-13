@@ -1,13 +1,14 @@
 import 'package:device_manager/device_manager.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:syncos_screen/features/devices/data/services/event_bus_control_device_service_decorator.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
-import 'package:syncos_screen/services/realtime/realtime_service_factory.dart';
+import 'package:syncos_screen/services/realtime/firebase_device_status_realtime_service.dart';
 
 abstract final class DeviceManagerFactory {
-  static Future<DevicesManagerBloc<T>> create<T>({
+  static DevicesManagerBloc<T> create<T>({
     required String deviceUuid,
     required T Function(String id, List<DeviceStatus> jsonList) fromStatusList,
-  }) async {
+  }) {
     final dioNetworkingService = NetworkingServiceFactory.create();
 
     return DevicesManagerBloc<T>(
@@ -27,16 +28,9 @@ abstract final class DeviceManagerFactory {
       batchStatusService: RemoteBatchStatusService(
         networkingService: dioNetworkingService,
       ),
-      realtimeService: await RealtimeServiceFactory.create(),
+      realtimeService: FirebaseDeviceStatusRealtimeService(
+        databaseReference: FirebaseDatabase.instance.ref('device-status'),
+      ),
     );
-  }
-
-  static Future<DevicesManagerBloc<T>> withStartListening<T>(
-    Future<DevicesManagerBloc<T>> future,
-  ) {
-    return future.then((bloc) {
-      bloc.add(const StartListeningEvent());
-      return bloc;
-    });
   }
 }

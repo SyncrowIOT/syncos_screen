@@ -31,27 +31,31 @@ class _FakeTokenStore implements TokenStore {
 }
 
 void main() {
-  test('persists tokens from the login response shape the API returns', () async {
-    final tokenStore = _FakeTokenStore();
-    final interceptor = HTTPInterceptor(tokenStore: tokenStore);
-    final requestOptions = RequestOptions(path: ApiEndpoints.login);
-    final response = Response<Object?>(
-      requestOptions: requestOptions,
-      statusCode: 201,
-      data: {
-        'statusCode': 201,
-        'data': {
-          'accessToken': 'access-123',
-          'refreshToken': 'refresh-456',
+  test(
+    '''
+persists tokens from the login response shape the API returns''',
+    () async {
+      final tokenStore = _FakeTokenStore();
+      final interceptor = HTTPInterceptor(tokenStore: tokenStore);
+      final requestOptions = RequestOptions(path: ApiEndpoints.login);
+      final response = Response<Object?>(
+        requestOptions: requestOptions,
+        statusCode: 201,
+        data: {
+          'statusCode': 201,
+          'data': {
+            'accessToken': 'access-123',
+            'refreshToken': 'refresh-456',
+          },
+          'message': 'User Logged in Successfully',
         },
-        'message': 'User Logged in Successfully',
-      },
-    );
+      );
 
-    final handler = ResponseInterceptorHandler();
-    await interceptor.onResponse(response, handler);
+      final handler = ResponseInterceptorHandler();
+      await interceptor.onResponse(response, handler);
 
-    expect(tokenStore.accessToken, 'access-123');
-    expect(tokenStore.refreshToken, 'refresh-456');
-  });
+      expect(tokenStore.accessToken, 'access-123');
+      expect(tokenStore.refreshToken, 'refresh-456');
+    },
+  );
 }

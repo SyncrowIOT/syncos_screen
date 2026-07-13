@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:255001682464:android:e83f1ea16881b855561245',
     messagingSenderId: '255001682464',
     projectId: 'syncrow-prod-79446',
-    databaseURL: 'https://syncrow-prod-79446-default-rtdb.firebaseio.com',
+    databaseURL: 'https://syncrow-prod-79446.asia-southeast1.firebasedatabase.app/',
     storageBucket: 'syncrow-prod-79446.firebasestorage.app',
   );
 
@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:255001682464:ios:f321844c1bdf0020561245',
     messagingSenderId: '255001682464',
     projectId: 'syncrow-prod-79446',
-    databaseURL: 'https://syncrow-prod-79446-default-rtdb.firebaseio.com',
+    databaseURL: 'https://syncrow-prod-79446.asia-southeast1.firebasedatabase.app/',
     storageBucket: 'syncrow-prod-79446.firebasestorage.app',
     iosBundleId: 'com.syncrow.syncosscreen',
   );

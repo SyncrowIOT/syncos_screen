@@ -1,7 +1,7 @@
 {
   "project_info": {
     "project_number": "255001682464",
-    "firebase_url": "https://syncrow-prod-79446-default-rtdb.firebaseio.com",
+    "firebase_url": "https://syncrow-prod-79446.asia-southeast1.firebasedatabase.app/",
     "project_id": "syncrow-prod-79446",
     "storage_bucket": "syncrow-prod-79446.firebasestorage.app"
   },
