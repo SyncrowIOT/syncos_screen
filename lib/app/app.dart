@@ -2,21 +2,68 @@ import 'package:auth/auth.dart';
 import 'package:design_system/design_system.dart';
 import 'package:devices/devices.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/app/auth_gate.dart';
-import 'package:syncos_screen/features/devices/power_clamp/presentation/views/power_clamp_view.dart';
+import 'package:go_router/go_router.dart';
+import 'package:syncos_screen/app/router/app_router.dart';
+import 'package:syncos_screen/app/router/auth_controller.dart';
 import 'package:syncos_screen/l10n/l10n.dart';
 import 'package:syncos_screen/services/api/dio_client.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
 import 'package:syncos_screen/services/api/secure_token_store.dart';
 import 'package:syncos_screen/services/auth/session_bootstrapper.dart';
 
-class App extends StatelessWidget {
+const _initialDevice = Device(
+  uuid: '6b54c0d5-906e-4836-b63c-de96b515c640',
+  name: 'Power Clamp',
+  productType: ProductType.powerClamp,
+  productUuid: '',
+  productName: 'Power Clamp',
+  subspaceName: '',
+  subspaceUuid: '',
+  online: true,
+  icon: '',
+  spaces: [],
+);
+
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  late final AuthController _authController;
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _authController = AuthController(
+      ensureAuthenticated: SessionBootstrapper(
+        tokenStore: SecureTokenStore(),
+        tokenRefreshService: DioClient.tokenRefreshService,
+        loginService: RemoteLoginService(
+          networkingService: NetworkingServiceFactory.create(),
+        ),
+      ).ensureAuthenticated,
+    );
+    _router = buildAppRouter(
+      authController: _authController,
+      initialDevice: _initialDevice,
+    );
+  }
+
+  @override
+  void dispose() {
+    _authController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final appTheme = AppTheme.light();
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: _router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -32,29 +79,6 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: AuthGate(
-        ensureAuthenticated: SessionBootstrapper(
-          tokenStore: SecureTokenStore(),
-          tokenRefreshService: DioClient.tokenRefreshService,
-          loginService: RemoteLoginService(
-            networkingService: NetworkingServiceFactory.create(),
-          ),
-        ).ensureAuthenticated,
-        child: const PowerClampView(
-          device: Device(
-            uuid: '6b54c0d5-906e-4836-b63c-de96b515c640',
-            name: 'Power Clamp',
-            productType: ProductType.powerClamp,
-            productUuid: '',
-            productName: 'Power Clamp',
-            subspaceName: '',
-            subspaceUuid: '',
-            online: true,
-            icon: '',
-            spaces: [],
-          ),
-        ),
-      ),
     );
   }
 }
