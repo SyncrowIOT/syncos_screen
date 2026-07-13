@@ -6,10 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:networking/networking.dart';
 import 'package:socketio_client/socketio_client.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
-import 'package:syncos_screen/services/api/auth_session_memory.dart';
 import 'package:syncos_screen/services/api/dio_client.dart';
 import 'package:syncos_screen/services/api/secure_token_store.dart';
-import 'package:syncos_screen/utils/secure_storage.dart';
 
 abstract final class RealtimeServiceFactory {
   static WebSocketDeviceStatusRealtimeService? _instance;
@@ -25,12 +23,7 @@ abstract final class RealtimeServiceFactory {
 
   static Future<WebSocketDeviceStatusRealtimeService> create() async {
     final webSocketUri = Uri.parse(dotenv.env['WS_URL']!);
-    final storedAccessToken = await flutterSecureStorage.read(
-      key: 'access_token',
-    );
-    final accessToken = storedAccessToken != null && storedAccessToken.isNotEmpty
-        ? storedAccessToken
-        : AuthSessionMemory.accessToken;
+    final accessToken = await SecureTokenStore().readAccessToken() ?? '';
     final authorizationHeader = accessToken.isNotEmpty
         ? 'Bearer $accessToken'
         : null;

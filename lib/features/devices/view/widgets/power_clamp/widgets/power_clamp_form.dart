@@ -3,7 +3,7 @@ import 'package:devices/devices.dart' as devices_package;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_phase_view.dart';
+import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_phase_pages.dart';
 import 'package:syncos_screen/widgets/page_indicator.dart';
 
 class PowerClampForm extends StatefulWidget {
@@ -52,10 +52,6 @@ class _PowerClampFormState extends State<PowerClampForm> {
       DevicesManagerState<PowerClampStatusModel>
     >(
       builder: (context, state) {
-        final powerClampModel = state.device;
-
-        final chartData = <EnergyData>[];
-
         return Scaffold(
           appBar: AppBar(
             title: Text(widget.device.name),
@@ -63,46 +59,12 @@ class _PowerClampFormState extends State<PowerClampForm> {
           body: Column(
             children: [
               Expanded(
-                child: PageView(
-                  controller: _pageController,
-                  children: [
-                    PowerClampPhaseView(
-                      deviceUuid: widget.device.uuid,
-                      generalData: powerClampModel?.general,
-                      title: 'Total Energy \nConsumption',
-                      phaseType: '',
-                      isGeneral: true,
-                      chartData: chartData,
-                      selectedDateNotifier: _selectedDateNotifier,
-                    ),
-                    PowerClampPhaseView(
-                      deviceUuid: widget.device.uuid,
-                      phaseData: powerClampModel?.phaseA,
-                      title: 'Phase A Energy \nConsumption',
-                      phaseType: 'Phase A consumption',
-                      isGeneral: false,
-                      chartData: chartData,
-                      selectedDateNotifier: _selectedDateNotifier,
-                    ),
-                    PowerClampPhaseView(
-                      deviceUuid: widget.device.uuid,
-                      phaseData: powerClampModel?.phaseB,
-                      title: 'Phase B Energy \nConsumption',
-                      phaseType: 'Phase B consumption',
-                      isGeneral: false,
-                      chartData: chartData,
-                      selectedDateNotifier: _selectedDateNotifier,
-                    ),
-                    PowerClampPhaseView(
-                      deviceUuid: widget.device.uuid,
-                      phaseData: powerClampModel?.phaseC,
-                      title: 'Phase C Energy \nConsumption',
-                      phaseType: 'Phase C consumption',
-                      isGeneral: false,
-                      chartData: chartData,
-                      selectedDateNotifier: _selectedDateNotifier,
-                    ),
-                  ],
+                child: PowerClampPhasePages(
+                  device: widget.device,
+                  powerClampModel: state.device,
+                  pageController: _pageController,
+                  chartData: const <EnergyData>[],
+                  selectedDateNotifier: _selectedDateNotifier,
                 ),
               ),
               PageIndicator(

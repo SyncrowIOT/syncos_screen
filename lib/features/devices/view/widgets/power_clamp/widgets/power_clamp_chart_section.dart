@@ -13,13 +13,11 @@ class PowerClampChartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: EnergyConsumptionChart(
-        chartData: chartData,
-        totalConsumption: chartData.fold(
-          0,
-          (sum, data) => sum + data.consumption,
-        ),
+    return EnergyConsumptionChart(
+      chartData: chartData,
+      totalConsumption: chartData.fold(
+        0,
+        (sum, data) => sum + data.consumption,
       ),
     );
   }

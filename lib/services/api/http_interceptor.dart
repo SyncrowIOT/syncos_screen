@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
-import 'package:syncos_screen/services/api/auth_session_memory.dart';
-import 'package:syncos_screen/utils/secure_storage.dart';
 
 class HTTPInterceptor extends InterceptorsWrapper {
+  HTTPInterceptor({required this._tokenStore});
+
+  final TokenStore _tokenStore;
+
   static const Set<String> _nonAuthenticatedEndpoints = {
     ApiEndpoints.login,
     ApiEndpoints.refreshToken,
@@ -36,7 +39,7 @@ class HTTPInterceptor extends InterceptorsWrapper {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final token = await _readAccessToken();
+    final token = await _tokenStore.readAccessToken() ?? '';
     if (checkHeaderExclusionListOfAddedParameters(options.path)) {
       options.headers.putIfAbsent(
         HttpHeaders.authorizationHeader,
@@ -70,16 +73,6 @@ class HTTPInterceptor extends InterceptorsWrapper {
     return shouldAddHeader;
   }
 
-  Future<String> _readAccessToken() async {
-    final storedToken = await flutterSecureStorage.read(
-      key: 'access_token',
-    );
-    if (storedToken != null && storedToken.isNotEmpty) {
-      return storedToken;
-    }
-    return AuthSessionMemory.accessToken;
-  }
-
   Future<void> _persistLoginTokens(Response<Object?> response) async {
     if (!response.requestOptions.path.contains(ApiEndpoints.login)) {
       return;
@@ -90,13 +83,9 @@ class HTTPInterceptor extends InterceptorsWrapper {
       return;
     }
 
-    await Future.wait([
-      flutterSecureStorage.write(key: 'access_token', value: tokens.$1),
-      flutterSecureStorage.write(key: 'refresh_token', value: tokens.$2),
-    ]);
-    AuthSessionMemory.setTokens(
-      access: tokens.$1,
-      refresh: tokens.$2,
+    await _tokenStore.writeTokens(
+      accessToken: tokens.$1,
+      refreshToken: tokens.$2,
     );
   }
 

@@ -1,16 +1,14 @@
 import 'package:device_manager/device_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
+import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_clamp_date_range_formatter.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/consumption_info_section.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/energy_consumption_header.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/general_metrics_section.dart';
 import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/phase_metrics_section.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_chart_section.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_empty_state.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_failure_state.dart';
+import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_history_section.dart';
 import 'package:syncos_screen/widgets/default_container.dart';
 import 'package:syncos_screen/widgets/month_year_selector.dart';
 
@@ -74,42 +72,6 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
     );
   }
 
-  String _getDateRange() {
-    final selectedDate = widget.selectedDateNotifier.value;
-    final firstDay = DateTime(selectedDate.year, selectedDate.month);
-    final lastDay = DateTime(selectedDate.year, selectedDate.month + 1, 0);
-    final dateFormat = DateFormat('dd/MM/yyyy');
-    return '${dateFormat.format(firstDay)} - ${dateFormat.format(lastDay)}';
-  }
-
-  List<EnergyData> _convertHistoryToEnergyData(
-    PowerClampDeviceHistoryLoaded state,
-  ) {
-    if (state.chartData.isEmpty) {
-      return [];
-    }
-
-    return state.chartData.map<EnergyData>((item) {
-      num consumption;
-      if (widget.isGeneral) {
-        consumption = item.energyConsumedKw;
-      } else if (widget.phaseType.contains('Phase A')) {
-        consumption = item.energyConsumedA;
-      } else if (widget.phaseType.contains('Phase B')) {
-        consumption = item.energyConsumedB;
-      } else if (widget.phaseType.contains('Phase C')) {
-        consumption = item.energyConsumedC;
-      } else {
-        consumption = item.energyConsumedKw;
-      }
-
-      return EnergyData(
-        time: DateFormat('dd MMM').format(item.date),
-        consumption: consumption.toDouble(),
-      );
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     final energyConsumed = widget.isGeneral
@@ -150,43 +112,19 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
             ConsumptionInfoSection(
               isGeneral: widget.isGeneral,
               phaseType: widget.phaseType,
-              dateTimeSelected: _getDateRange(),
+              dateTimeSelected: PowerClampDateRangeFormatter.monthRange(
+                widget.selectedDateNotifier.value,
+              ),
             ),
             const SizedBox(height: 10),
             ValueListenableBuilder<DateTime>(
               valueListenable: widget.selectedDateNotifier,
               builder: (context, selectedDate, _) {
-                return BlocBuilder<
-                  PowerClampDeviceHistoryBloc,
-                  PowerClampDeviceHistoryState
-                >(
-                  builder: (context, state) {
-                    return switch (state) {
-                      PowerClampDeviceHistoryLoading() => const Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                      PowerClampDeviceHistoryFailure(:final errorMessage) =>
-                        PowerClampFailureState(
-                          message: errorMessage,
-                          onRetry: _fetchHistoryData,
-                        ),
-                      PowerClampDeviceHistoryLoaded() => () {
-                        final displayData = _convertHistoryToEnergyData(state);
-
-                        if (displayData.isEmpty) {
-                          return const PowerClampEmptyState();
-                        }
-
-                        return PowerClampChartSection(
-                          chartData: displayData,
-                          selectedDate: selectedDate,
-                        );
-                      }(),
-                      _ => const PowerClampEmptyState(),
-                    };
-                  },
+                return PowerClampHistorySection(
+                  isGeneral: widget.isGeneral,
+                  phaseType: widget.phaseType,
+                  selectedDate: selectedDate,
+                  onRetry: _fetchHistoryData,
                 );
               },
             ),

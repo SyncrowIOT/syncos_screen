@@ -1,15 +1,27 @@
 import 'package:networking/networking.dart';
-import 'package:syncos_screen/services/api/auth_session_memory.dart';
 import 'package:syncos_screen/utils/secure_storage.dart';
 
 final class SecureTokenStore implements TokenStore {
-  @override
-  Future<String?> readAccessToken() =>
-      flutterSecureStorage.read(key: 'access_token');
+  static String _memoryAccessToken = '';
+  static String _memoryRefreshToken = '';
 
   @override
-  Future<String?> readRefreshToken() =>
-      flutterSecureStorage.read(key: 'refresh_token');
+  Future<String?> readAccessToken() async {
+    final stored = await flutterSecureStorage.read(key: 'access_token');
+    if (stored != null && stored.isNotEmpty) {
+      return stored;
+    }
+    return _memoryAccessToken;
+  }
+
+  @override
+  Future<String?> readRefreshToken() async {
+    final stored = await flutterSecureStorage.read(key: 'refresh_token');
+    if (stored != null && stored.isNotEmpty) {
+      return stored;
+    }
+    return _memoryRefreshToken;
+  }
 
   @override
   Future<void> writeTokens({
@@ -20,10 +32,8 @@ final class SecureTokenStore implements TokenStore {
       flutterSecureStorage.write(key: 'access_token', value: accessToken),
       flutterSecureStorage.write(key: 'refresh_token', value: refreshToken),
     ]);
-    AuthSessionMemory.setTokens(
-      access: accessToken,
-      refresh: refreshToken,
-    );
+    _memoryAccessToken = accessToken;
+    _memoryRefreshToken = refreshToken;
   }
 
   @override
@@ -32,6 +42,7 @@ final class SecureTokenStore implements TokenStore {
       flutterSecureStorage.delete(key: 'access_token'),
       flutterSecureStorage.delete(key: 'refresh_token'),
     ]);
-    AuthSessionMemory.clear();
+    _memoryAccessToken = '';
+    _memoryRefreshToken = '';
   }
 }

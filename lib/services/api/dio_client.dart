@@ -5,17 +5,10 @@ import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
 import 'package:syncos_screen/services/api/secure_token_store.dart';
 
-void Function()? onTokenRefreshFailed;
-
-final class DioClient {
-  factory DioClient() => _instance;
-  const DioClient._internal();
-
-  static const DioClient _instance = DioClient._internal();
-
+abstract final class DioClient {
   static Dio? _dio;
   static String? _projectUuid;
-  static RemoteTokenRefreshService? _tokenRefreshService;
+  static late RemoteTokenRefreshService? _tokenRefreshService;
 
   static final _tokenStore = SecureTokenStore();
 
@@ -57,12 +50,11 @@ final class DioClient {
         tokenStore: _tokenStore,
         projectUuidProvider: () async => _projectUuid,
       ),
-      HTTPInterceptor(),
+      HTTPInterceptor(tokenStore: _tokenStore),
       TokenRefreshInterceptor(
         dio: dio,
         tokenStore: _tokenStore,
         refreshPath: ApiEndpoints.refreshToken,
-        onRefreshFailed: () => onTokenRefreshFailed?.call(),
         tokenRefreshService: tokenRefreshService,
       ),
     ]);
