@@ -7,12 +7,10 @@ import 'package:syncos_screen/services/api/auth_session_memory.dart';
 import 'package:syncos_screen/utils/secure_storage.dart';
 
 class HTTPInterceptor extends InterceptorsWrapper {
-  List<String> headerExclusionList = [];
-
-  List<String> headerExclusionListOfAddedParameters = [
+  static const Set<String> _nonAuthenticatedEndpoints = {
     ApiEndpoints.login,
     ApiEndpoints.refreshToken,
-  ];
+  };
   @override
   Future<void> onResponse(
     Response<Object?> response,
@@ -64,7 +62,7 @@ class HTTPInterceptor extends InterceptorsWrapper {
   bool checkHeaderExclusionListOfAddedParameters(String path) {
     var shouldAddHeader = true;
 
-    for (final urlConstant in headerExclusionListOfAddedParameters) {
+    for (final urlConstant in _nonAuthenticatedEndpoints) {
       if (path.contains(urlConstant)) {
         shouldAddHeader = false;
       }
