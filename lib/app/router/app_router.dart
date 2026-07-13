@@ -25,7 +25,6 @@ GoRouter buildAppRouter({
 }) {
   return GoRouter(
     initialLocation: '/',
-    initialExtra: initialDevice,
     refreshListenable: authController,
     redirect: (context, state) => authGateRedirect(authController, state),
     routes: [
@@ -41,8 +40,7 @@ GoRouter buildAppRouter({
       ),
       GoRoute(
         path: '/',
-        builder: (context, state) =>
-            PowerClampRoute(device: state.extra! as Device),
+        builder: (context, state) => PowerClampRoute(device: initialDevice),
       ),
     ],
   );
