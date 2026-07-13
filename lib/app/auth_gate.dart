@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Gates [child] behind a startup authentication check. Shows a loading
-/// indicator while [ensureAuthenticated] is pending, [child] once it
-/// resolves true, or a minimal retry screen if it resolves false.
 class AuthGate extends StatefulWidget {
   const AuthGate({
     required this.ensureAuthenticated,

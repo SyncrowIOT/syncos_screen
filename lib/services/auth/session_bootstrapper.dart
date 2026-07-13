@@ -2,13 +2,6 @@ import 'package:auth/auth.dart';
 import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/auth/env_config.dart';
 
-/// Orchestrates getting a real session at app startup: try a silent
-/// refresh using a stored refresh token first, then fall back to a full
-/// login with default POC credentials (with retries/backoff).
-///
-/// Does not reimplement token refresh or persistence — both
-/// [RemoteTokenRefreshService] and [LoginService] already write tokens into
-/// the shared [TokenStore] as a side effect of succeeding.
 class SessionBootstrapper {
   SessionBootstrapper({
     required TokenStore tokenStore,
@@ -18,17 +11,8 @@ class SessionBootstrapper {
     Future<void> Function(Duration duration)? delay,
     this.maxLoginAttempts = 3,
     this.backoff = const [Duration(seconds: 2), Duration(seconds: 4)],
-  })  : // The public parameter names below are part of this class's
-        // required API and can't carry a leading underscore, so none of
-        // them can be initializing formals for the private fields they
-        // populate.
-        // ignore: prefer_initializing_formals
-        _tokenStore = tokenStore,
-        // Same rationale as above.
-        // ignore: prefer_initializing_formals
+  })  : _tokenStore = tokenStore,
         _tokenRefreshService = tokenRefreshService,
-        // Same rationale as above.
-        // ignore: prefer_initializing_formals
         _loginService = loginService,
         _credentialsBuilder = credentialsBuilder ?? _defaultCredentials,
         _delay = delay ?? Future.delayed;
@@ -39,12 +23,8 @@ class SessionBootstrapper {
   final LoginParam Function() _credentialsBuilder;
   final Future<void> Function(Duration duration) _delay;
 
-  /// Maximum number of full-login attempts (only used when silent refresh
-  /// is unavailable/fails).
   final int maxLoginAttempts;
 
-  /// Delay before each retry, indexed by attempt number (0-based). If there
-  /// are more attempts than entries, the last entry is reused.
   final List<Duration> backoff;
 
   static LoginParam _defaultCredentials() => LoginParam(
@@ -53,9 +33,6 @@ class SessionBootstrapper {
         isMobilePlatform: true,
       );
 
-  /// Returns true once a real access token is confirmed to be in the
-  /// [TokenStore], false if every attempt (silent refresh + all login
-  /// retries) failed.
   Future<bool> ensureAuthenticated() async {
     if (await _trySilentRefresh()) return true;
     return _loginWithRetries();
@@ -65,11 +42,6 @@ class SessionBootstrapper {
     final refresh = await _tokenStore.readRefreshToken();
     if (refresh == null || refresh.isEmpty) return false;
     try {
-      // Unlike _attemptLogin, we don't re-read TokenStore here: this is
-      // intentional, not an oversight. RemoteTokenRefreshService is
-      // pre-existing, already-trusted code that returns the token string
-      // directly and persists it internally, so it doesn't carry the same
-      // response-shape (snake_case-vs-camelCase) risk the login path does.
       await _tokenRefreshService.call();
       return true;
     } on Object {
@@ -96,10 +68,6 @@ class SessionBootstrapper {
     } on Object {
       return false;
     }
-    // Don't trust LoginModel alone: the login response's token shape may
-    // not match what HTTPInterceptor._extractTokens persists (a known
-    // snake_case-vs-camelCase risk flagged during planning) — verify the
-    // token store actually received a token.
     final access = await _tokenStore.readAccessToken();
     return access != null && access.isNotEmpty;
   }

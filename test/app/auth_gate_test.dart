@@ -21,9 +21,6 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       expect(find.text('home'), findsNothing);
 
-      // Drain the pending Future.delayed timer so
-      // AutomatedTestWidgetsFlutterBinding doesn't flag it as leaked at
-      // teardown.
       await tester.pump(const Duration(seconds: 1));
     });
 

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/auth_session_memory.dart';
-import 'package:syncos_screen/utils/keychain_retry_helper.dart';
 import 'package:syncos_screen/utils/secure_storage.dart';
 
 class HTTPInterceptor extends InterceptorsWrapper {
@@ -93,10 +92,10 @@ class HTTPInterceptor extends InterceptorsWrapper {
       return;
     }
 
-    await KeychainRetryHelper.retryKeychainWrites({
-      'access_token': tokens.$1,
-      'refresh_token': tokens.$2,
-    });
+    await Future.wait([
+      flutterSecureStorage.write(key: 'access_token', value: tokens.$1),
+      flutterSecureStorage.write(key: 'refresh_token', value: tokens.$2),
+    ]);
     AuthSessionMemory.setTokens(
       access: tokens.$1,
       refresh: tokens.$2,

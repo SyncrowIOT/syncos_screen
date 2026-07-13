@@ -27,11 +27,8 @@ final class DioClient {
     return _makeDio();
   }
 
-  /// The same [RemoteTokenRefreshService] instance used internally by the
-  /// HTTP 401-retry interceptor, exposed so other startup flows (e.g. a
-  /// session bootstrapper) share its in-flight-refresh dedup lock.
   static RemoteTokenRefreshService get tokenRefreshService {
-    instance; // ensures _makeDio() has run and set _tokenRefreshService
+    instance;
     return _tokenRefreshService!;
   }
 
