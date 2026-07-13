@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
 
 abstract final class PowerClampEnergyDataMapper {
   static List<EnergyData> map(

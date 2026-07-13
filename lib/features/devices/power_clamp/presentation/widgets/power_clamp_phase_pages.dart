@@ -1,8 +1,8 @@
 import 'package:device_manager/device_manager.dart';
-import 'package:devices/devices.dart' as devices_package;
+import 'package:devices/devices.dart' ;
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_phase_view.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_view.dart';
 
 class PowerClampPhasePages extends StatelessWidget {
   const PowerClampPhasePages({
@@ -14,7 +14,7 @@ class PowerClampPhasePages extends StatelessWidget {
     super.key,
   });
 
-  final devices_package.Device device;
+  final Device device;
   final PowerClampStatusModel? powerClampModel;
   final PageController pageController;
   final List<EnergyData> chartData;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_info_card.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_info_card.dart';
 import 'package:syncos_screen/utils/assets.dart';
 
-class PhaseMetricsSection extends StatelessWidget {
-  const PhaseMetricsSection({
+class PowerClampPhaseMetricsSection extends StatelessWidget {
+  const PowerClampPhaseMetricsSection({
     required this.voltage,
     required this.current,
     required this.activePower,

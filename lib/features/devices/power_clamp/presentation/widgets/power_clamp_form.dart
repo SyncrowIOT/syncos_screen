@@ -1,15 +1,15 @@
 import 'package:device_manager/device_manager.dart';
-import 'package:devices/devices.dart' as devices_package;
+import 'package:devices/devices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_phase_pages.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_pages.dart';
 import 'package:syncos_screen/widgets/page_indicator.dart';
 
 class PowerClampForm extends StatefulWidget {
   const PowerClampForm({required this.device, super.key});
 
-  final devices_package.Device device;
+  final Device device;
 
   @override
   State<PowerClampForm> createState() => _PowerClampFormState();

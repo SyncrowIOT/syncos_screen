@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_clamp_energy_data_mapper.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_chart_section.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_empty_state.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_failure_state.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/helpers/power_clamp_energy_data_mapper.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart_section.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_empty_state.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_failure_state.dart';
 
 class PowerClampHistorySection extends StatelessWidget {
   const PowerClampHistorySection({

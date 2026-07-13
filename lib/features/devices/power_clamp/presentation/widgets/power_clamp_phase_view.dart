@@ -2,13 +2,13 @@ import 'package:device_manager/device_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_clamp_date_range_formatter.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/consumption_info_section.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/energy_consumption_header.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/general_metrics_section.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/phase_metrics_section.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_history_section.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/helpers/power_clamp_date_range_formatter.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_consumption_info_section.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_energy_consumption_header.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_general_metrics_section.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_history_section.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_metrics_section.dart';
 import 'package:syncos_screen/widgets/default_container.dart';
 import 'package:syncos_screen/widgets/month_year_selector.dart';
 
@@ -90,26 +90,26 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            EnergyConsumptionHeader(
+            PowerClampEnergyConsumptionHeader(
               title: widget.title,
               energyConsumption: energyConsumed,
             ),
             const SizedBox(height: 10),
             if (widget.isGeneral)
-              GeneralMetricsSection(
+              PowerClampGeneralMetricsSection(
                 activePower: widget.generalData?.active ?? '--',
                 current: widget.generalData?.current ?? '--',
                 frequency: widget.generalData?.frequency ?? '--',
               )
             else
-              PhaseMetricsSection(
+              PowerClampPhaseMetricsSection(
                 voltage: widget.phaseData?.voltage ?? '--',
                 current: widget.phaseData?.current ?? '--',
                 activePower: widget.phaseData?.activePower ?? '--',
                 powerFactor: widget.phaseData?.powerFactor ?? '--',
               ),
             const SizedBox(height: 10),
-            ConsumptionInfoSection(
+            PowerClampConsumptionInfoSection(
               isGeneral: widget.isGeneral,
               phaseType: widget.phaseType,
               dateTimeSelected: PowerClampDateRangeFormatter.monthRange(

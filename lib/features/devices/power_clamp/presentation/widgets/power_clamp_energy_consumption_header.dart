@@ -1,8 +1,8 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
-class EnergyConsumptionHeader extends StatelessWidget {
-  const EnergyConsumptionHeader({
+class PowerClampEnergyConsumptionHeader extends StatelessWidget {
+  const PowerClampEnergyConsumptionHeader({
     required this.title,
     required this.energyConsumption,
     super.key,

@@ -1,8 +1,8 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
-class ConsumptionInfoSection extends StatelessWidget {
-  const ConsumptionInfoSection({
+class PowerClampConsumptionInfoSection extends StatelessWidget {
+  const PowerClampConsumptionInfoSection({
     required this.isGeneral,
     required this.phaseType,
     required this.dateTimeSelected,

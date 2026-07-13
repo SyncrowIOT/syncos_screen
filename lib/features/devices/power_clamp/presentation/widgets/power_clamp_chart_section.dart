@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
 
 class PowerClampChartSection extends StatelessWidget {
   const PowerClampChartSection({
@@ -13,7 +13,7 @@ class PowerClampChartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EnergyConsumptionChart(
+    return PowerClampChart(
       chartData: chartData,
       totalConsumption: chartData.fold(
         0,

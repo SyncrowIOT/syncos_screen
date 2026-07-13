@@ -1,9 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/energy_data.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/power_chart_config.dart';
+import 'package:syncos_screen/features/devices/power_clamp/data/energy_data.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/helpers/power_chart_config.dart';
 
-export 'package:syncos_screen/features/devices/view/widgets/power_clamp/energy_data.dart';
+export 'package:syncos_screen/features/devices/power_clamp/data/energy_data.dart';
 
 class EnergyConsumptionChart extends StatelessWidget {
   const EnergyConsumptionChart({

@@ -1,7 +1,7 @@
 import 'package:design_system/design_system.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/energy_data.dart';
+import 'package:syncos_screen/features/devices/power_clamp/data/energy_data.dart';
 
 abstract final class PowerChartConfig {
   static LineTouchData lineTouchData(BuildContext context) {

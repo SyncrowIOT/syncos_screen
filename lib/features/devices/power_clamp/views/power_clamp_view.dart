@@ -1,25 +1,25 @@
 import 'package:device_manager/device_manager.dart';
-import 'package:devices/devices.dart' as devices_package;
+import 'package:devices/devices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
 import 'package:syncos_screen/features/devices/factories/device_manager_factory.dart';
-import 'package:syncos_screen/features/devices/view/widgets/power_clamp/widgets/power_clamp_form.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_form.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
 
-class PowerClampPage extends StatefulWidget {
-  const PowerClampPage({
+class PowerClampView extends StatefulWidget {
+  const PowerClampView({
     required this.device,
     super.key,
   });
 
-  final devices_package.Device device;
+  final Device device;
 
   @override
-  State<PowerClampPage> createState() => _PowerClampPageState();
+  State<PowerClampView> createState() => _PowerClampViewState();
 }
 
-class _PowerClampPageState extends State<PowerClampPage> {
+class _PowerClampViewState extends State<PowerClampView> {
   late final Future<DevicesManagerBloc<PowerClampStatusModel>> _blocFuture;
 
   @override
