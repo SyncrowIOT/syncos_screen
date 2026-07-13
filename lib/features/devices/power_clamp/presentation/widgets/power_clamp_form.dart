@@ -2,7 +2,6 @@ import 'package:device_manager/device_manager.dart';
 import 'package:devices/devices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_pages.dart';
 import 'package:syncos_screen/widgets/page_indicator.dart';
 
@@ -63,7 +62,6 @@ class _PowerClampFormState extends State<PowerClampForm> {
                   device: widget.device,
                   powerClampModel: state.device,
                   pageController: _pageController,
-                  chartData: const <EnergyData>[],
                   selectedDateNotifier: _selectedDateNotifier,
                 ),
               ),

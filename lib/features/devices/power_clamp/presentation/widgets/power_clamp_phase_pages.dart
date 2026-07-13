@@ -1,7 +1,6 @@
 import 'package:device_manager/device_manager.dart';
 import 'package:devices/devices.dart' ;
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_view.dart';
 
 class PowerClampPhasePages extends StatelessWidget {
@@ -9,7 +8,6 @@ class PowerClampPhasePages extends StatelessWidget {
     required this.device,
     required this.powerClampModel,
     required this.pageController,
-    required this.chartData,
     required this.selectedDateNotifier,
     super.key,
   });
@@ -17,7 +15,6 @@ class PowerClampPhasePages extends StatelessWidget {
   final Device device;
   final PowerClampStatusModel? powerClampModel;
   final PageController pageController;
-  final List<EnergyData> chartData;
   final ValueNotifier<DateTime> selectedDateNotifier;
 
   static const _phases = [
@@ -53,7 +50,6 @@ class PowerClampPhasePages extends StatelessWidget {
             title: phase.title,
             phaseType: phase.phaseType,
             isGeneral: phase.isGeneral,
-            chartData: chartData,
             selectedDateNotifier: selectedDateNotifier,
           );
         },

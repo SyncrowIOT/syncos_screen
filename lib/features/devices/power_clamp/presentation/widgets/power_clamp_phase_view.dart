@@ -2,7 +2,6 @@ import 'package:device_manager/device_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
-import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/helpers/power_clamp_date_range_formatter.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_consumption_info_section.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_energy_consumption_header.dart';
@@ -18,7 +17,6 @@ class PowerClampPhaseView extends StatefulWidget {
     required this.title,
     required this.phaseType,
     required this.isGeneral,
-    required this.chartData,
     required this.selectedDateNotifier,
     this.generalData,
     this.phaseData,
@@ -31,7 +29,6 @@ class PowerClampPhaseView extends StatefulWidget {
   final String title;
   final String phaseType;
   final bool isGeneral;
-  final List<EnergyData> chartData;
   final ValueNotifier<DateTime> selectedDateNotifier;
 
   @override
