@@ -7,7 +7,7 @@ class PageIndicator extends StatelessWidget {
     required this.pageCount,
     this.activeColor,
     this.inactiveColor,
-    this.dotSize,
+    this.dotSize = 10,
     this.dotSpacing,
     this.padding,
     super.key,
@@ -17,7 +17,7 @@ class PageIndicator extends StatelessWidget {
   final int pageCount;
   final Color? activeColor;
   final Color? inactiveColor;
-  final double? dotSize;
+  final double dotSize;
   final double? dotSpacing;
   final EdgeInsets? padding;
 
@@ -31,18 +31,20 @@ class PageIndicator extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(pageCount, (index) {
+              final isActive = currentPage == index;
+              final color = isActive
+                  ? activeColor ?? context.appTheme.colors.text.title
+                  : inactiveColor ?? context.appTheme.colors.text.bodySubtle;
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 margin: EdgeInsets.symmetric(
                   horizontal: dotSpacing ?? 4,
                 ),
-                height: dotSize ?? 10,
-                width: dotSize ?? 10,
+                height: dotSize,
+                width: dotSize,
                 decoration: BoxDecoration(
-                  color: currentPage == index
-                      ? (activeColor ?? context.appTheme.colors.text.title)
-                      : (inactiveColor ?? context.appTheme.colors.text.bodySubtle),
-                  borderRadius: BorderRadius.circular((dotSize ?? 10) / 2),
+                  color: color,
+                  borderRadius: BorderRadius.circular(dotSize / 2),
                 ),
               );
             }),
