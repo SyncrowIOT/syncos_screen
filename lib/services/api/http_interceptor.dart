@@ -10,7 +10,7 @@ class HTTPInterceptor extends InterceptorsWrapper {
 
   final TokenStore _tokenStore;
 
-  static const Set<String> _nonAuthenticatedEndpoints = {
+  static const _nonAuthenticatedEndpoints = <String>{
     ApiEndpoints.login,
     ApiEndpoints.refreshToken,
   };
@@ -106,8 +106,8 @@ class HTTPInterceptor extends InterceptorsWrapper {
     final root = Map<String, dynamic>.from(value);
     final rawData = root['data'];
     final tokenData = rawData is Map ? Map<String, dynamic>.from(rawData) : root;
-    final accessToken = tokenData['access_token'];
-    final refreshToken = tokenData['refresh_token'];
+    final accessToken = tokenData['accessToken'];
+    final refreshToken = tokenData['refreshToken'];
 
     if (accessToken is! String ||
         refreshToken is! String ||

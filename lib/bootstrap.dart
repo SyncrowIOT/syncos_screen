@@ -18,7 +18,7 @@ Future<void> bootstrap(
   try {
     await dotenv.load(
       fileName: '.env.local.$environment',
-      mergeWith: dotenv.env,
+      mergeWith: Map<String, String>.from(dotenv.env),
     );
   } on Object catch (error, stackTrace) {
     log(
