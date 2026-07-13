@@ -12,7 +12,7 @@ import 'package:syncos_screen/services/api/secure_token_store.dart';
 import 'package:syncos_screen/services/auth/session_bootstrapper.dart';
 
 const _initialDevice = Device(
-  uuid: '6b54c0d5-906e-4836-b63c-de96b515c640',
+  uuid: '89c096bb-c291-432a-91e6-da3eb6b32226',
   name: 'Power Clamp',
   productType: ProductType.powerClamp,
   productUuid: '',
