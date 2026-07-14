@@ -28,7 +28,7 @@ class PowerClampFailureState extends StatelessWidget {
   }
 
   Widget _buildTitle(BuildContext context) {
-    return  Text(
+    return Text(
       'Failed to Load Data',
       textAlign: TextAlign.center,
       style: TextStyle(
@@ -65,7 +65,7 @@ class PowerClampFailureState extends StatelessWidget {
       icon: const Icon(Icons.refresh_rounded),
       label: const Text('Retry'),
       style: TextButton.styleFrom(
-        foregroundColor:context.appTheme.colors.text.danger,
+        foregroundColor: context.appTheme.colors.text.danger,
       ),
     );
   }
