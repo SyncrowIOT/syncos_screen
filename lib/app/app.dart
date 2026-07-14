@@ -7,8 +7,8 @@ import 'package:syncos_screen/app/router/app_router.dart';
 import 'package:syncos_screen/app/router/auth_controller.dart';
 import 'package:syncos_screen/l10n/l10n.dart';
 import 'package:syncos_screen/services/api/dio_client.dart';
+import 'package:syncos_screen/services/api/local_secure_token_store.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
-import 'package:syncos_screen/services/api/secure_token_store.dart';
 import 'package:syncos_screen/services/auth/session_bootstrapper.dart';
 
 const _initialDevice = Device(
@@ -40,7 +40,7 @@ class _AppState extends State<App> {
     super.initState();
     _authController = AuthController(
       ensureAuthenticated: SessionBootstrapper(
-        tokenStore: SecureTokenStore(),
+        tokenStore: LocalSecureTokenStore(),
         tokenRefreshService: DioClient.tokenRefreshService,
         loginService: RemoteLoginService(
           networkingService: NetworkingServiceFactory.create(),

@@ -2,14 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
-import 'package:syncos_screen/services/api/secure_token_store.dart';
+import 'package:syncos_screen/services/api/local_secure_token_store.dart';
 
 abstract final class DioClient {
   static Dio? _dio;
   static String? _projectUuid;
   static late RemoteTokenRefreshService? _tokenRefreshService;
 
-  static final _tokenStore = SecureTokenStore();
+  static final _tokenStore = LocalSecureTokenStore();
 
   static Dio get instance {
     final existing = _dio;
