@@ -2,8 +2,8 @@ import 'package:networking/networking.dart';
 import 'package:syncos_screen/utils/secure_storage.dart';
 
 final class LocalSecureTokenStore implements TokenStore {
-  static String _memoryAccessToken = '';
-  static String _memoryRefreshToken = '';
+  String _memoryAccessToken = '';
+  String _memoryRefreshToken = '';
 
   @override
   Future<String?> readAccessToken() async {
