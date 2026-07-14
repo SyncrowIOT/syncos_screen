@@ -4,6 +4,7 @@ include:
 analyzer:
   exclude:
     - lib/l10n/gen/*
+    - "**/firebase_database-12.4.4/**"
 linter:
   rules:
     prefer_single_quotes: true
