@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:design_system/design_system.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:syncos_screen/features/devices/power_clamp/data/energy_data.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/models/energy_data.dart';
 import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 abstract final class PowerClampChartConfig {
@@ -36,7 +36,7 @@ abstract final class PowerClampChartConfig {
               TextStyle(
                 color: context.appTheme.colors.text.brand,
                 fontWeight: FontWeight.w400,
-                fontSize: max(9,9.s(context)),
+                fontSize: max(9, 9.s(context)),
               ),
             );
           }).toList();
@@ -79,7 +79,7 @@ abstract final class PowerClampChartConfig {
                   quarterTurns: -1,
                   child: Text(
                     chartData[index].time,
-                    style: TextStyle(fontSize: max(9,10.s(context))),
+                    style: TextStyle(fontSize: max(9, 10.s(context))),
                   ),
                 ),
               );
