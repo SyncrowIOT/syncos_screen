@@ -47,8 +47,9 @@ Future<void> _pumpRouter(WidgetTester tester, GoRouter router) {
 
 void main() {
   group('authGateRedirect', () {
-    testWidgets('shows splash while authenticating, then home on success',
-        (tester) async {
+    testWidgets('shows splash while authenticating, then home on success', (
+      tester,
+    ) async {
       final authController = AuthController(
         ensureAuthenticated: () => Future<bool>.delayed(
           const Duration(seconds: 1),
@@ -69,8 +70,7 @@ void main() {
       expect(find.text('home'), findsOneWidget);
     });
 
-    testWidgets(
-        'shows auth-error with retry when authentication fails, '
+    testWidgets('shows auth-error with retry when authentication fails, '
         'and returns home once retry succeeds', (tester) async {
       var attempt = 0;
       final authController = AuthController(

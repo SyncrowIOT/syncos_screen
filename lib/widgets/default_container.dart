@@ -41,8 +41,12 @@ class DefaultContainer extends StatelessWidget {
           height: height,
           width: width,
           constraints: boxConstraints,
-          margin: margin ??
-              EdgeInsets.only(right: 3.scaledBy(context), bottom: 3.scaledBy(context)),
+          margin:
+              margin ??
+              EdgeInsets.only(
+                right: 3.scaledBy(context),
+                bottom: 3.scaledBy(context),
+              ),
           padding: padding ?? EdgeInsets.all(10.scaledBy(context)),
           child: child,
         ),

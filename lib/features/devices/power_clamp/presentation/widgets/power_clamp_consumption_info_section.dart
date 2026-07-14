@@ -26,7 +26,9 @@ class PowerClampConsumptionInfoSection extends StatelessWidget {
           children: [
             Text(
               isGeneral ? 'Total consumption' : phaseType,
-              style: context.appTheme.typography.body.medium.scaledFontSize(context),
+              style: context.appTheme.typography.body.medium.scaledFontSize(
+                context,
+              ),
             ),
             Text(
               dateTimeSelected,
@@ -37,15 +39,19 @@ class PowerClampConsumptionInfoSection extends StatelessWidget {
             ),
           ],
         ),
-         Row(
+        Row(
           children: [
             Text(
               '${energyConsumed.toStringAsFixed(2)} ',
-              style: context.appTheme.typography.body.medium.scaledFontSize(context),
+              style: context.appTheme.typography.body.medium.scaledFontSize(
+                context,
+              ),
             ),
             Text(
               'kWh',
-              style: context.appTheme.typography.body.medium.scaledFontSize(context),
+              style: context.appTheme.typography.body.medium.scaledFontSize(
+                context,
+              ),
             ),
           ],
         ),

@@ -20,7 +20,7 @@ class PowerClampEmptyState extends StatelessWidget {
   }
 
   Widget _buildTitle(BuildContext context) {
-    return  Text(
+    return Text(
       'No Data Available',
       textAlign: TextAlign.center,
       style: TextStyle(

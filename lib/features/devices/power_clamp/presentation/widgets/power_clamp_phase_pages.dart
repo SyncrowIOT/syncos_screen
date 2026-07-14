@@ -1,5 +1,5 @@
 import 'package:device_manager/device_manager.dart';
-import 'package:devices/devices.dart' ;
+import 'package:devices/devices.dart';
 import 'package:flutter/material.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_view.dart';
 

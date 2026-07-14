@@ -26,8 +26,7 @@ class PageIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final scaledDotSize = dotSize.scaledBy(context);
     return Padding(
-      padding:
-          padding ?? EdgeInsets.symmetric(vertical: 10.scaledBy(context)),
+      padding: padding ?? EdgeInsets.symmetric(vertical: 10.scaledBy(context)),
       child: ValueListenableBuilder<int>(
         valueListenable: currentPageNotifier,
         builder: (context, currentPage, _) {

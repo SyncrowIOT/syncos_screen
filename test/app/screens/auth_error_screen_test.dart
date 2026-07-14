@@ -6,18 +6,19 @@ import '../../helpers/helpers.dart';
 
 void main() {
   testWidgets(
-      'AuthErrorScreen shows the error message and calls onRetry when tapped',
-      (tester) async {
-    var retried = false;
-    await tester.pumpApp(
-      AuthErrorScreen(onRetry: () => retried = true),
-    );
+    'AuthErrorScreen shows the error message and calls onRetry when tapped',
+    (tester) async {
+      var retried = false;
+      await tester.pumpApp(
+        AuthErrorScreen(onRetry: () => retried = true),
+      );
 
-    expect(find.text('Unable to sign in'), findsOneWidget);
+      expect(find.text('Unable to sign in'), findsOneWidget);
 
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Retry'));
-    await tester.pump();
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Retry'));
+      await tester.pump();
 
-    expect(retried, isTrue);
-  });
+      expect(retried, isTrue);
+    },
+  );
 }

@@ -105,7 +105,9 @@ class HTTPInterceptor extends InterceptorsWrapper {
 
     final root = Map<String, dynamic>.from(value);
     final rawData = root['data'];
-    final tokenData = rawData is Map ? Map<String, dynamic>.from(rawData) : root;
+    final tokenData = rawData is Map
+        ? Map<String, dynamic>.from(rawData)
+        : root;
     final accessToken = tokenData['accessToken'];
     final refreshToken = tokenData['refreshToken'];
 
