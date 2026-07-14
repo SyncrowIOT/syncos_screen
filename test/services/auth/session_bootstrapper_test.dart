@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/auth/session_bootstrapper.dart';
+import 'package:syncos_screen/services/auth/token_refresh_service.dart';
 
 class _MockTokenStore extends Mock implements TokenStore {}
 
-class _MockTokenRefreshService extends Mock
-    implements RemoteTokenRefreshService {}
+class _MockTokenRefreshService extends Mock implements TokenRefreshService {}
 
 class _MockLoginService extends Mock implements LoginService {}
 
@@ -30,12 +30,13 @@ void main() {
       tokenStore: tokenStore,
       tokenRefreshService: tokenRefreshService,
       loginService: loginService,
-      credentialsBuilder: credentialsBuilder ??
+      credentialsBuilder:
+          credentialsBuilder ??
           () => LoginParam(
-                email: 'test@example.com',
-                password: 'secret',
-                isMobilePlatform: true,
-              ),
+            email: 'test@example.com',
+            password: 'secret',
+            isMobilePlatform: true,
+          ),
       delay: (duration) async => recordedDelays.add(duration),
     );
   }
@@ -48,26 +49,31 @@ void main() {
   });
 
   group('silent refresh', () {
-    test('succeeds when a refresh token exists and refresh call succeeds',
-        () async {
-      when(() => tokenStore.readRefreshToken())
-          .thenAnswer((_) async => 'stored-refresh-token');
-      when(() => tokenRefreshService.call())
-          .thenAnswer((_) async => 'new-access-token');
+    test(
+      'succeeds when a refresh token exists and refresh call succeeds',
+      () async {
+        when(
+          () => tokenStore.readRefreshToken(),
+        ).thenAnswer((_) async => 'stored-refresh-token');
+        when(
+          () => tokenRefreshService.call(),
+        ).thenAnswer((_) async => 'new-access-token');
 
-      final result = await buildBootstrapper().ensureAuthenticated();
+        final result = await buildBootstrapper().ensureAuthenticated();
 
-      expect(result, isTrue);
-      verifyNever(() => loginService.login(any()));
-    });
+        expect(result, isTrue);
+        verifyNever(() => loginService.login(any()));
+      },
+    );
 
-    test('falls back to login when there is no stored refresh token',
-        () async {
+    test('falls back to login when there is no stored refresh token', () async {
       when(() => tokenStore.readRefreshToken()).thenAnswer((_) async => null);
-      when(() => loginService.login(any()))
-          .thenAnswer((_) async => LoginModel(token: 'access-token'));
-      when(() => tokenStore.readAccessToken())
-          .thenAnswer((_) async => 'access-token');
+      when(
+        () => loginService.login(any()),
+      ).thenAnswer((_) async => LoginModel(token: 'access-token'));
+      when(
+        () => tokenStore.readAccessToken(),
+      ).thenAnswer((_) async => 'access-token');
 
       final result = await buildBootstrapper().ensureAuthenticated();
 
@@ -76,14 +82,18 @@ void main() {
     });
 
     test('falls back to login when the refresh call throws', () async {
-      when(() => tokenStore.readRefreshToken())
-          .thenAnswer((_) async => 'stored-refresh-token');
-      when(() => tokenRefreshService.call())
-          .thenThrow(StateError('Invalid refresh response'));
-      when(() => loginService.login(any()))
-          .thenAnswer((_) async => LoginModel(token: 'access-token'));
-      when(() => tokenStore.readAccessToken())
-          .thenAnswer((_) async => 'access-token');
+      when(
+        () => tokenStore.readRefreshToken(),
+      ).thenAnswer((_) async => 'stored-refresh-token');
+      when(
+        () => tokenRefreshService.call(),
+      ).thenThrow(StateError('Invalid refresh response'));
+      when(
+        () => loginService.login(any()),
+      ).thenAnswer((_) async => LoginModel(token: 'access-token'));
+      when(
+        () => tokenStore.readAccessToken(),
+      ).thenAnswer((_) async => 'access-token');
 
       final result = await buildBootstrapper().ensureAuthenticated();
 
@@ -106,8 +116,9 @@ void main() {
         }
         return LoginModel(token: 'access-token');
       });
-      when(() => tokenStore.readAccessToken())
-          .thenAnswer((_) async => 'access-token');
+      when(
+        () => tokenStore.readAccessToken(),
+      ).thenAnswer((_) async => 'access-token');
 
       final result = await buildBootstrapper().ensureAuthenticated();
 
@@ -120,8 +131,9 @@ void main() {
     });
 
     test('gives up after maxLoginAttempts and returns false', () async {
-      when(() => loginService.login(any()))
-          .thenThrow(Exception('login failed'));
+      when(
+        () => loginService.login(any()),
+      ).thenThrow(Exception('login failed'));
 
       final result = await buildBootstrapper().ensureAuthenticated();
 
@@ -133,11 +145,11 @@ void main() {
       );
     });
 
-    test(
-        'treats a login that reports success but persists no token as a '
+    test('treats a login that reports success but persists no token as a '
         'failure', () async {
-      when(() => loginService.login(any()))
-          .thenAnswer((_) async => LoginModel(token: 'access-token'));
+      when(
+        () => loginService.login(any()),
+      ).thenAnswer((_) async => LoginModel(token: 'access-token'));
       when(() => tokenStore.readAccessToken()).thenAnswer((_) async => null);
 
       final result = await buildBootstrapper().ensureAuthenticated();

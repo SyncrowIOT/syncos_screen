@@ -9,6 +9,7 @@ import 'package:syncos_screen/l10n/l10n.dart';
 import 'package:syncos_screen/services/api/dio_client.dart';
 import 'package:syncos_screen/services/api/local_secure_token_store.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
+import 'package:syncos_screen/services/auth/remote_token_refresh_service_adapter.dart';
 import 'package:syncos_screen/services/auth/session_bootstrapper.dart';
 
 const _initialDevice = Device(
@@ -41,7 +42,9 @@ class _AppState extends State<App> {
     _authController = AuthController(
       ensureAuthenticated: SessionBootstrapper(
         tokenStore: LocalSecureTokenStore(),
-        tokenRefreshService: DioClient.tokenRefreshService,
+        tokenRefreshService: RemoteTokenRefreshServiceAdapter(
+          tokenRefreshService: DioClient.tokenRefreshService,
+        ),
         loginService: RemoteLoginService(
           networkingService: NetworkingServiceFactory.create(),
         ),

@@ -1,6 +1,7 @@
 import 'package:auth/auth.dart';
 import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/auth/env_config.dart';
+import 'package:syncos_screen/services/auth/token_refresh_service.dart';
 
 class SessionBootstrapper {
   SessionBootstrapper({
@@ -15,7 +16,7 @@ class SessionBootstrapper {
        _delay = delay ?? Future.delayed;
 
   final TokenStore _tokenStore;
-  final RemoteTokenRefreshService _tokenRefreshService;
+  final TokenRefreshService _tokenRefreshService;
   final LoginService _loginService;
   final LoginParam Function() _credentialsBuilder;
   final Future<void> Function(Duration duration) _delay;
@@ -51,7 +52,9 @@ class SessionBootstrapper {
       if (await _attemptLogin()) return true;
       final isLastAttempt = attempt == maxLoginAttempts - 1;
       if (!isLastAttempt) {
-        final delayIndex = attempt < backoff.length ? attempt : backoff.length - 1;
+        final delayIndex = attempt < backoff.length
+            ? attempt
+            : backoff.length - 1;
         await _delay(backoff[delayIndex]);
       }
     }
