@@ -8,12 +8,11 @@ export 'package:syncos_screen/features/devices/power_clamp/data/energy_data.dart
 class PowerClampChart extends StatelessWidget {
   const PowerClampChart({
     required this.chartData,
-    required this.totalConsumption,
     super.key,
   });
 
   final List<EnergyData> chartData;
-  final double totalConsumption;
+
   @override
   Widget build(BuildContext context) {
     return LineChart(
