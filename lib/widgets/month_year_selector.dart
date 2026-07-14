@@ -18,10 +18,15 @@ class MonthYearSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canDecrementMonth = _canDecrementMonth();
-    final canIncrementMonth = _canIncrementMonth();
-    final canDecrementYear = _canDecrementYear();
-    final canIncrementYear = _canIncrementYear();
+    final previousMonth = DateTime(selectedDate.year, selectedDate.month - 1);
+    final nextMonth = DateTime(selectedDate.year, selectedDate.month + 1);
+    final previousYear = DateTime(selectedDate.year - 1, selectedDate.month);
+    final nextYear = DateTime(selectedDate.year + 1, selectedDate.month);
+
+    final canDecrementMonth = _isAfterOrAtMin(previousMonth);
+    final canIncrementMonth = _isBeforeOrAtMax(nextMonth);
+    final canDecrementYear = _isAfterOrAtMin(previousYear);
+    final canIncrementYear = _isBeforeOrAtMax(nextYear);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,8 +38,12 @@ class MonthYearSelector extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: DateSelector(
               value: DateFormat('MMMM').format(selectedDate),
-              onDecrement: canDecrementMonth ? _decrementMonth : () {},
-              onIncrement: canIncrementMonth ? _incrementMonth : () {},
+              onDecrement: canDecrementMonth
+                  ? () => onDateChanged(previousMonth)
+                  : () {},
+              onIncrement: canIncrementMonth
+                  ? () => onDateChanged(nextMonth)
+                  : () {},
               canDecrement: canDecrementMonth,
               canIncrement: canIncrementMonth,
             ),
@@ -46,8 +55,12 @@ class MonthYearSelector extends StatelessWidget {
             alignment: AlignmentDirectional.centerEnd,
             child: DateSelector(
               value: selectedDate.year.toString(),
-              onDecrement: canDecrementYear ? _decrementYear : () {},
-              onIncrement: canIncrementYear ? _incrementYear : () {},
+              onDecrement: canDecrementYear
+                  ? () => onDateChanged(previousYear)
+                  : () {},
+              onIncrement: canIncrementYear
+                  ? () => onDateChanged(nextYear)
+                  : () {},
               canDecrement: canDecrementYear,
               canIncrement: canIncrementYear,
             ),
@@ -57,43 +70,11 @@ class MonthYearSelector extends StatelessWidget {
     );
   }
 
-  bool _canDecrementMonth() {
-    final newDate = DateTime(selectedDate.year, selectedDate.month - 1);
-    return newDate.isAfter(_minDate) || newDate.isAtSameMomentAs(_minDate);
+  bool _isAfterOrAtMin(DateTime candidate) {
+    return candidate.isAfter(_minDate) || candidate.isAtSameMomentAs(_minDate);
   }
 
-  bool _canIncrementMonth() {
-    final newDate = DateTime(selectedDate.year, selectedDate.month + 1);
-    return newDate.isBefore(_maxDate) || newDate.isAtSameMomentAs(_maxDate);
-  }
-
-  bool _canDecrementYear() {
-    final newDate = DateTime(selectedDate.year - 1, selectedDate.month);
-    return newDate.isAfter(_minDate) || newDate.isAtSameMomentAs(_minDate);
-  }
-
-  bool _canIncrementYear() {
-    final newDate = DateTime(selectedDate.year + 1, selectedDate.month);
-    return newDate.isBefore(_maxDate) || newDate.isAtSameMomentAs(_maxDate);
-  }
-
-  void _decrementMonth() {
-    final newDate = DateTime(selectedDate.year, selectedDate.month - 1);
-    onDateChanged(newDate);
-  }
-
-  void _incrementMonth() {
-    final newDate = DateTime(selectedDate.year, selectedDate.month + 1);
-    onDateChanged(newDate);
-  }
-
-  void _decrementYear() {
-    final newDate = DateTime(selectedDate.year - 1, selectedDate.month);
-    onDateChanged(newDate);
-  }
-
-  void _incrementYear() {
-    final newDate = DateTime(selectedDate.year + 1, selectedDate.month);
-    onDateChanged(newDate);
+  bool _isBeforeOrAtMax(DateTime candidate) {
+    return candidate.isBefore(_maxDate) || candidate.isAtSameMomentAs(_maxDate);
   }
 }
