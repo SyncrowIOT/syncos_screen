@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
+import 'package:syncos_screen/features/devices/power_clamp/domain/power_clamp_energy_calculator.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_chart.dart';
 
 abstract final class PowerClampEnergyDataMapper {
@@ -8,41 +9,19 @@ abstract final class PowerClampEnergyDataMapper {
     required bool isGeneral,
     required String phaseType,
   }) {
-    return state.chartData
-        .map(
-          (item) => EnergyData(
-            time: DateFormat('dd MMM').format(item.date),
-            consumption: _consumptionFor(
-              item,
-              isGeneral: isGeneral,
-              phaseType: phaseType,
-            ).toDouble(),
-          ),
-        )
-        .toList();
+    return PowerClampEnergyCalculator.readings(
+      state,
+      isGeneral: isGeneral,
+      phaseType: phaseType,
+    ).map((reading) {
+      return EnergyData(
+        time: DateFormat('dd MMM').format(reading.date),
+        consumption: reading.consumption,
+      );
+    }).toList();
   }
 
   static double totalConsumption(List<EnergyData> data) {
     return data.fold(0, (sum, item) => sum + item.consumption);
-  }
-
-  static num _consumptionFor(
-    DeviceEnergyDataModel item, {
-    required bool isGeneral,
-    required String phaseType,
-  }) {
-    if (isGeneral) {
-      return item.energyConsumedKw;
-    }
-    if (phaseType.contains('Phase A')) {
-      return item.energyConsumedA;
-    }
-    if (phaseType.contains('Phase B')) {
-      return item.energyConsumedB;
-    }
-    if (phaseType.contains('Phase C')) {
-      return item.energyConsumedC;
-    }
-    return item.energyConsumedKw;
   }
 }
