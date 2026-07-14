@@ -40,7 +40,7 @@ class PowerClampPhaseMetricsSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 10.s(context)),
+        SizedBox(height: 10.scaledBy(context)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

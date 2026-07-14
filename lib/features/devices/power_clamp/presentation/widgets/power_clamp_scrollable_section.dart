@@ -12,14 +12,14 @@ class PowerClampScrollableSection extends StatelessWidget {
     return DefaultContainer(
       child: Padding(
         padding: EdgeInsets.only(
-          left: 5.s(context),
-          right: 5.s(context),
-          top: 10.s(context),
-          bottom: 10.s(context),
+          left: 5.scaledBy(context),
+          right: 5.scaledBy(context),
+          top: 10.scaledBy(context),
+          bottom: 10.scaledBy(context),
         ),
         child: Center(
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 900.s(context)),
+            constraints: BoxConstraints(maxWidth: 900.scaledBy(context)),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

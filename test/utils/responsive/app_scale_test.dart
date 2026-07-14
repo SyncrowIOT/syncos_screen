@@ -12,7 +12,7 @@ void main() {
       MaterialApp(
         home: Builder(
           builder: (context) {
-            scale = context.scale;
+            scale = context.shortestSideScaleFactor;
             return const SizedBox();
           },
         ),
@@ -24,24 +24,33 @@ void main() {
   testWidgets('scale is 1.0 at the reference shortest side', (tester) async {
     final scale = await pumpScale(
       tester,
-      const Size(kBaseShortestSide, kBaseShortestSide * 1.5),
+      const Size(
+        kDesignReferenceShortestSide,
+        kDesignReferenceShortestSide * 1.5,
+      ),
     );
     expect(scale, closeTo(1.0, 0.001));
   });
 
-  testWidgets('scale is clamped to kMinScale on a very small screen', (
-    tester,
-  ) async {
-    final scale = await pumpScale(tester, const Size(200, 320));
-    expect(scale, kMinScale);
-  });
+  testWidgets(
+    'scale is clamped to kLegibilityFloorScale on a very small screen',
+    (
+      tester,
+    ) async {
+      final scale = await pumpScale(tester, const Size(200, 320));
+      expect(scale, kLegibilityFloorScale);
+    },
+  );
 
-  testWidgets('scale is clamped to kMaxScale on a very large screen', (
-    tester,
-  ) async {
-    final scale = await pumpScale(tester, const Size(2000, 2600));
-    expect(scale, kMaxScale);
-  });
+  testWidgets(
+    'scale is clamped to kLayoutCeilingScale on a very large screen',
+    (
+      tester,
+    ) async {
+      final scale = await pumpScale(tester, const Size(2000, 2600));
+      expect(scale, kLayoutCeilingScale);
+    },
+  );
 
   testWidgets('scale follows the shortest side, not the longest', (
     tester,
@@ -51,13 +60,13 @@ void main() {
     expect(portrait, equals(landscape));
   });
 
-  testWidgets('num.s scales a literal by the current context scale', (
+  testWidgets('num.scaledBy scales a literal by the current context scale', (
     tester,
   ) async {
     double? scaledValue;
     tester.view.physicalSize = const Size(
-      kBaseShortestSide * 2,
-      kBaseShortestSide * 2,
+      kDesignReferenceShortestSide * 2,
+      kDesignReferenceShortestSide * 2,
     );
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
@@ -65,12 +74,12 @@ void main() {
       MaterialApp(
         home: Builder(
           builder: (context) {
-            scaledValue = 10.s(context);
+            scaledValue = 10.scaledBy(context);
             return const SizedBox();
           },
         ),
       ),
     );
-    expect(scaledValue, 10 * kMaxScale);
+    expect(scaledValue, 10 * kLayoutCeilingScale);
   });
 }

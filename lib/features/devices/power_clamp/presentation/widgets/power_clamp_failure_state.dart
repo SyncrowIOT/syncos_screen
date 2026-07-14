@@ -33,7 +33,7 @@ class PowerClampFailureState extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: context.appTheme.colors.text.danger,
-        fontSize: 20.s(context),
+        fontSize: 20.scaledBy(context),
         fontWeight: FontWeight.w600,
         height: 1.2,
       ),
@@ -42,7 +42,7 @@ class PowerClampFailureState extends StatelessWidget {
 
   Widget _buildErrorMessage(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 32.s(context)),
+      padding: EdgeInsets.symmetric(horizontal: 32.scaledBy(context)),
       child: Text(
         message.isNotEmpty
             ? message
@@ -51,7 +51,7 @@ class PowerClampFailureState extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: context.appTheme.colors.text.danger,
-          fontSize: 14.s(context),
+          fontSize: 14.scaledBy(context),
           fontWeight: FontWeight.w400,
           height: 1.4,
         ),

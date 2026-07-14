@@ -29,7 +29,7 @@ class DefaultContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedBorderRadius =
-        borderRadius ?? BorderRadius.all(Radius.circular(20.s(context)));
+        borderRadius ?? BorderRadius.all(Radius.circular(20.scaledBy(context)));
     return Material(
       type: MaterialType.card,
       borderRadius: resolvedBorderRadius,
@@ -42,8 +42,8 @@ class DefaultContainer extends StatelessWidget {
           width: width,
           constraints: boxConstraints,
           margin: margin ??
-              EdgeInsets.only(right: 3.s(context), bottom: 3.s(context)),
-          padding: padding ?? EdgeInsets.all(10.s(context)),
+              EdgeInsets.only(right: 3.scaledBy(context), bottom: 3.scaledBy(context)),
+          padding: padding ?? EdgeInsets.all(10.scaledBy(context)),
           child: child,
         ),
       ),

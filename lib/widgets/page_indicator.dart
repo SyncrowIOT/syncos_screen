@@ -24,10 +24,10 @@ class PageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaledDotSize = dotSize.s(context);
+    final scaledDotSize = dotSize.scaledBy(context);
     return Padding(
       padding:
-          padding ?? EdgeInsets.symmetric(vertical: 10.s(context)),
+          padding ?? EdgeInsets.symmetric(vertical: 10.scaledBy(context)),
       child: ValueListenableBuilder<int>(
         valueListenable: currentPageNotifier,
         builder: (context, currentPage, _) {
@@ -41,7 +41,7 @@ class PageIndicator extends StatelessWidget {
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 margin: EdgeInsets.symmetric(
-                  horizontal: (dotSpacing ?? 4).s(context),
+                  horizontal: (dotSpacing ?? 4).scaledBy(context),
                 ),
                 height: scaledDotSize,
                 width: scaledDotSize,

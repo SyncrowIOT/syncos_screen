@@ -25,7 +25,7 @@ class PowerClampEmptyState extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: context.appTheme.colors.text.body,
-        fontSize: 20.s(context),
+        fontSize: 20.scaledBy(context),
         fontWeight: FontWeight.w600,
       ),
     );
@@ -37,7 +37,7 @@ class PowerClampEmptyState extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: context.appTheme.colors.text.bodySubtle,
-        fontSize: 14.s(context),
+        fontSize: 14.scaledBy(context),
         fontWeight: FontWeight.w400,
         height: 1.4,
       ),

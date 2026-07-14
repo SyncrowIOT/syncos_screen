@@ -16,7 +16,7 @@ class PowerClampEnergyConsumptionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 10.s(context),
+      spacing: 10.scaledBy(context),
       children: [
         const Text('Energy usage'),
         Row(
@@ -25,13 +25,15 @@ class PowerClampEnergyConsumptionHeader extends StatelessWidget {
           children: [
             Text(
               title,
-              style: context.appTheme.typography.body.large.scaled(context),
+              style: context.appTheme.typography.body.large.scaledFontSize(
+                context,
+              ),
             ),
             Row(
               children: [
                 Text(
                   energyConsumption,
-                  style: context.appTheme.typography.body.large.scaled(
+                  style: context.appTheme.typography.body.large.scaledFontSize(
                     context,
                   ),
                 ),

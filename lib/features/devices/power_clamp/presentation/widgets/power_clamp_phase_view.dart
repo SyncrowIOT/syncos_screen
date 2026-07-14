@@ -81,7 +81,7 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
           title: widget.title,
           energyConsumption: energyConsumed,
         ),
-        SizedBox(height: 10.s(context)),
+        SizedBox(height: 10.scaledBy(context)),
         if (widget.isGeneral)
           PowerClampGeneralMetricsSection(
             activePower: widget.generalData?.active ?? '--',
@@ -95,15 +95,15 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
             activePower: widget.phaseData?.activePower ?? '--',
             powerFactor: widget.phaseData?.powerFactor ?? '--',
           ),
-        SizedBox(height: 10.s(context)),
+        SizedBox(height: 10.scaledBy(context)),
         PowerClampConsumptionSummary(
           isGeneral: widget.isGeneral,
           phaseType: widget.phaseType,
           selectedDate: widget.selectedDateNotifier.value,
         ),
-        SizedBox(height: 10.s(context)),
+        SizedBox(height: 10.scaledBy(context)),
         SizedBox(
-          height: 220.s(context),
+          height: 220.scaledBy(context),
           child: ValueListenableBuilder<DateTime>(
             valueListenable: widget.selectedDateNotifier,
             builder: (context, _, _) {
@@ -115,7 +115,7 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
             },
           ),
         ),
-        SizedBox(height: 30.s(context)),
+        SizedBox(height: 30.scaledBy(context)),
         ValueListenableBuilder<DateTime>(
           valueListenable: widget.selectedDateNotifier,
           builder: (context, selectedDate, _) {

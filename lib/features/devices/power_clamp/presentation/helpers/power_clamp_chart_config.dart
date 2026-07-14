@@ -18,13 +18,13 @@ abstract final class PowerClampChartConfig {
           return context.appTheme.colors.background.neutralPrimary;
         },
         tooltipPadding: EdgeInsets.symmetric(
-          horizontal: 10.s(context),
-          vertical: 8.s(context),
+          horizontal: 10.scaledBy(context),
+          vertical: 8.scaledBy(context),
         ),
         tooltipBorder: BorderSide(
           color: context.appTheme.colors.text.bodySubtle,
         ),
-        tooltipBorderRadius: BorderRadius.circular(12.s(context)),
+        tooltipBorderRadius: BorderRadius.circular(12.scaledBy(context)),
         getTooltipItems: (touchedSpots) {
           return touchedSpots.map((spot) {
             final index = spot.x.toInt();
@@ -36,7 +36,7 @@ abstract final class PowerClampChartConfig {
               TextStyle(
                 color: context.appTheme.colors.text.brand,
                 fontWeight: FontWeight.w400,
-                fontSize: max(9, 9.s(context)),
+                fontSize: max(9, 9.scaledBy(context)),
               ),
             );
           }).toList();
@@ -54,32 +54,32 @@ abstract final class PowerClampChartConfig {
       leftTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          reservedSize: 12.s(context),
+          reservedSize: 12.scaledBy(context),
           getTitlesWidget: (value, meta) => const SizedBox.shrink(),
         ),
       ),
       rightTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          reservedSize: 12.s(context),
+          reservedSize: 12.scaledBy(context),
           getTitlesWidget: (value, meta) => const SizedBox.shrink(),
         ),
       ),
       topTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          reservedSize: 70.s(context),
+          reservedSize: 70.scaledBy(context),
           interval: 1,
           getTitlesWidget: (value, meta) {
             final index = value.toInt();
             if (index >= 0 && index < chartData.length) {
               return Padding(
-                padding: EdgeInsets.only(bottom: 24.s(context)),
+                padding: EdgeInsets.only(bottom: 24.scaledBy(context)),
                 child: RotatedBox(
                   quarterTurns: -1,
                   child: Text(
                     chartData[index].time,
-                    style: TextStyle(fontSize: max(9, 10.s(context))),
+                    style: TextStyle(fontSize: max(9, 10.scaledBy(context))),
                   ),
                 ),
               );
@@ -136,7 +136,7 @@ abstract final class PowerClampChartConfig {
       ),
       dotData: const FlDotData(show: false),
       isStrokeCapRound: true,
-      barWidth: 5.s(context),
+      barWidth: 5.scaledBy(context),
     );
   }
 }
