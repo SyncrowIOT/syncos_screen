@@ -3,6 +3,7 @@ import 'package:devices/devices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_pages.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_scaffold.dart';
 import 'package:syncos_screen/widgets/page_indicator.dart';
 
 class PowerClampForm extends StatefulWidget {
@@ -51,10 +52,8 @@ class _PowerClampFormState extends State<PowerClampForm> {
       DevicesManagerState<PowerClampStatusModel>
     >(
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.device.name),
-          ),
+        return PowerClampScaffold(
+          device: widget.device,
           body: Column(
             children: [
               Expanded(
