@@ -5,9 +5,11 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  pull_request:
-    branches:
-      - development
+  workflow_dispatch:
+  # Disabled automatic triggering. Re-enable by restoring the pull_request trigger below.
+  # pull_request:
+  #   branches:
+  #     - development
 
 jobs:
   build:
