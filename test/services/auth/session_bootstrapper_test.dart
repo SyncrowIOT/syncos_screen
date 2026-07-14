@@ -41,7 +41,7 @@ class SpyTokenRefreshService implements TokenRefreshService {
   @override
   Future<String> call() async {
     final error = _errorToThrow;
-    if (error != null) throw error;
+    if (error != null) throw Exception(error);
     return accessTokenToReturn;
   }
 }
@@ -63,7 +63,7 @@ class SpyLoginService implements LoginService {
     receivedParams.add(param);
     final error = _errorToThrow;
     if (error != null && receivedParams.length <= _failForAttempts) {
-      throw error;
+      throw Exception(error);
     }
     return modelToReturn;
   }
