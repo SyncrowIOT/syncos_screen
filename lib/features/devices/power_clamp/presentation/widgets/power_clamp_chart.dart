@@ -18,7 +18,7 @@ class PowerClampChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineChart(
       LineChartData(
-        lineTouchData: PowerClampChartConfig.lineTouchData(context),
+        lineTouchData: PowerClampChartConfig.lineTouchData(context, chartData),
         titlesData: PowerClampChartConfig.titlesData(context, chartData),
         gridData: PowerClampChartConfig.gridData(context),
         lineBarsData: [PowerClampChartConfig.lineBarData(context, chartData)],

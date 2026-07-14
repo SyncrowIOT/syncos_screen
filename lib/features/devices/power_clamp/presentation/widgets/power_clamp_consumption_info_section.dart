@@ -7,12 +7,14 @@ class PowerClampConsumptionInfoSection extends StatelessWidget {
     required this.isGeneral,
     required this.phaseType,
     required this.dateTimeSelected,
+    required this.energyConsumed,
     super.key,
   });
 
   final bool isGeneral;
   final String phaseType;
   final String dateTimeSelected;
+  final double energyConsumed;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class PowerClampConsumptionInfoSection extends StatelessWidget {
          Row(
           children: [
             Text(
-              '1000.00 ',
+              '${energyConsumed.toStringAsFixed(2)} ',
               style: context.appTheme.typography.body.medium.scaled(context),
             ),
             Text(

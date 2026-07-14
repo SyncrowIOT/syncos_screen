@@ -7,7 +7,10 @@ import 'package:syncos_screen/features/devices/power_clamp/data/energy_data.dart
 import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 abstract final class PowerClampChartConfig {
-  static LineTouchData lineTouchData(BuildContext context) {
+  static LineTouchData lineTouchData(
+    BuildContext context,
+    List<EnergyData> chartData,
+  ) {
     return LineTouchData(
       getTouchLineEnd: (barData, spotIndex) => 10.0,
       touchTooltipData: LineTouchTooltipData(
@@ -24,8 +27,12 @@ abstract final class PowerClampChartConfig {
         tooltipBorderRadius: BorderRadius.circular(12.s(context)),
         getTooltipItems: (touchedSpots) {
           return touchedSpots.map((spot) {
+            final index = spot.x.toInt();
+            final time = index >= 0 && index < chartData.length
+                ? chartData[index].time
+                : '';
             return LineTooltipItem(
-              '${spot.x},\n ${spot.y.toStringAsFixed(2)} kWh',
+              '$time,\n ${spot.y.toStringAsFixed(2)} kWh',
               TextStyle(
                 color: context.appTheme.colors.text.brand,
                 fontWeight: FontWeight.w400,
@@ -44,8 +51,20 @@ abstract final class PowerClampChartConfig {
   ) {
     return FlTitlesData(
       bottomTitles: const AxisTitles(),
-      leftTitles: const AxisTitles(),
-      rightTitles: const AxisTitles(),
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 12.s(context),
+          getTitlesWidget: (value, meta) => const SizedBox.shrink(),
+        ),
+      ),
+      rightTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 12.s(context),
+          getTitlesWidget: (value, meta) => const SizedBox.shrink(),
+        ),
+      ),
       topTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,

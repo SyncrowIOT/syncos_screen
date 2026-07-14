@@ -66,11 +66,16 @@ class _AppState extends State<App> {
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scaffoldBackgroundColor: appTheme.colors.background.neutralPrimary,
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: appTheme.colors.text.brand,
+        ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: appTheme.colors.text.brand,
         ),
         extensions: [appTheme],
         appBarTheme: AppBarTheme(
+          centerTitle: true,
           backgroundColor: appTheme.colors.background.neutralPrimary,
           elevation: 0,
           scrolledUnderElevation: 0,

@@ -22,6 +22,10 @@ abstract final class PowerClampEnergyDataMapper {
         .toList();
   }
 
+  static double totalConsumption(List<EnergyData> data) {
+    return data.fold(0, (sum, item) => sum + item.consumption);
+  }
+
   static num _consumptionFor(
     DeviceEnergyDataModel item, {
     required bool isGeneral,
