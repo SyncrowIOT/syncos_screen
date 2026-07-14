@@ -18,6 +18,13 @@ class DateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final decrementColor = canDecrement
+        ? context.appTheme.colors.text.title
+        : context.appTheme.colors.text.bodySubtle;
+    final incrementColor = canIncrement
+        ? context.appTheme.colors.text.body
+        : context.appTheme.colors.text.bodySubtle;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
@@ -30,19 +37,12 @@ class DateSelector extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: canDecrement
-                  ? context.appTheme.colors.text.title
-                  : context.appTheme.colors.text.bodySubtle,
-            ),
+            icon: Icon(Icons.arrow_back_ios, color: decrementColor),
             onPressed: canDecrement ? onDecrement : null,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             iconSize: 20,
-            color: canDecrement
-                ? context.appTheme.colors.text.title
-                : context.appTheme.colors.text.bodySubtle,
+            color: decrementColor,
           ),
           Text(
             value,
@@ -51,19 +51,12 @@ class DateSelector extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios,
-              color: canIncrement
-                  ? context.appTheme.colors.text.body
-                  : context.appTheme.colors.text.bodySubtle,
-            ),
+            icon: Icon(Icons.arrow_forward_ios, color: incrementColor),
             onPressed: canIncrement ? onIncrement : null,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             iconSize: 20,
-            color: canIncrement
-                ? context.appTheme.colors.text.body
-                : context.appTheme.colors.text.bodySubtle,
+            color: incrementColor,
           ),
         ],
       ),
