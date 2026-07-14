@@ -4,12 +4,10 @@ import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/
 class PowerClampChartSection extends StatelessWidget {
   const PowerClampChartSection({
     required this.chartData,
-    required this.selectedDate,
     super.key,
   });
 
   final List<EnergyData> chartData;
-  final DateTime selectedDate;
 
   @override
   Widget build(BuildContext context) {

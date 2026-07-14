@@ -10,14 +10,12 @@ class PowerClampHistorySection extends StatelessWidget {
   const PowerClampHistorySection({
     required this.isGeneral,
     required this.phaseType,
-    required this.selectedDate,
     required this.onRetry,
     super.key,
   });
 
   final bool isGeneral;
   final String phaseType;
-  final DateTime selectedDate;
   final VoidCallback onRetry;
 
   @override
@@ -51,9 +49,6 @@ class PowerClampHistorySection extends StatelessWidget {
       return const PowerClampEmptyState();
     }
 
-    return PowerClampChartSection(
-      chartData: displayData,
-      selectedDate: selectedDate,
-    );
+    return PowerClampChartSection(chartData: displayData);
   }
 }

@@ -106,11 +106,10 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
           height: 220.s(context),
           child: ValueListenableBuilder<DateTime>(
             valueListenable: widget.selectedDateNotifier,
-            builder: (context, selectedDate, _) {
+            builder: (context, _, _) {
               return PowerClampHistorySection(
                 isGeneral: widget.isGeneral,
                 phaseType: widget.phaseType,
-                selectedDate: selectedDate,
                 onRetry: _fetchHistoryData,
               );
             },
