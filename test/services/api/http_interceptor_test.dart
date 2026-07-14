@@ -4,7 +4,7 @@ import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
 
-class _FakeTokenStore implements TokenStore {
+class SpyTokenStore implements TokenStore {
   String? accessToken;
   String? refreshToken;
 
@@ -35,7 +35,7 @@ void main() {
     '''
 persists tokens from the login response shape the API returns''',
     () async {
-      final tokenStore = _FakeTokenStore();
+      final tokenStore = SpyTokenStore();
       final interceptor = HTTPInterceptor(tokenStore: tokenStore);
       final requestOptions = RequestOptions(path: ApiEndpoints.login);
       final response = Response<Object?>(
