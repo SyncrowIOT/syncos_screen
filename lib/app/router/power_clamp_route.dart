@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:power_clamp_device_history/power_clamp_device_history.dart';
 import 'package:syncos_screen/features/devices/factories/device_manager_factory.dart';
-import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_form.dart';
+import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_view.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
 
 class PowerClampRoute extends StatelessWidget {
@@ -47,7 +47,7 @@ class PowerClampRoute extends StatelessWidget {
           },
         ),
       ],
-      child: PowerClampForm(device: device),
+      child: PowerClampView(device: device),
     );
   }
 }
