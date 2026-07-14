@@ -19,20 +19,26 @@ class PowerClampGeneralMetricsSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        PowerClampInfoCard(
-          iconPath: Assets.powerActiveIcon,
-          title: 'Active',
-          value: activePower,
+        Expanded(
+          child: PowerClampInfoCard(
+            iconPath: Assets.powerActiveIcon,
+            title: 'Active',
+            value: activePower,
+          ),
         ),
-        PowerClampInfoCard(
-          iconPath: Assets.voltMeterIcon,
-          title: 'Current',
-          value: current,
+        Expanded(
+          child: PowerClampInfoCard(
+            iconPath: Assets.voltMeterIcon,
+            title: 'Current',
+            value: current,
+          ),
         ),
-        PowerClampInfoCard(
-          iconPath: Assets.frequencyIcon,
-          title: 'Frequency',
-          value: frequency,
+        Expanded(
+          child: PowerClampInfoCard(
+            iconPath: Assets.frequencyIcon,
+            title: 'Frequency',
+            value: frequency,
+          ),
         ),
       ],
     );

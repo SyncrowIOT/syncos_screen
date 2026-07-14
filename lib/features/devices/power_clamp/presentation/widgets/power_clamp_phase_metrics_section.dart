@@ -24,15 +24,19 @@ class PowerClampPhaseMetricsSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PowerClampInfoCard(
-              iconPath: Assets.voltageIcon,
-              title: 'Voltage',
-              value: voltage,
+            Expanded(
+              child: PowerClampInfoCard(
+                iconPath: Assets.voltageIcon,
+                title: 'Voltage',
+                value: voltage,
+              ),
             ),
-            PowerClampInfoCard(
-              iconPath: Assets.voltMeterIcon,
-              title: 'Current',
-              value: current,
+            Expanded(
+              child: PowerClampInfoCard(
+                iconPath: Assets.voltMeterIcon,
+                title: 'Current',
+                value: current,
+              ),
             ),
           ],
         ),
@@ -40,15 +44,19 @@ class PowerClampPhaseMetricsSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PowerClampInfoCard(
-              iconPath: Assets.powerActiveIcon,
-              title: 'Active Power',
-              value: activePower,
+            Expanded(
+              child: PowerClampInfoCard(
+                iconPath: Assets.powerActiveIcon,
+                title: 'Active Power',
+                value: activePower,
+              ),
             ),
-            PowerClampInfoCard(
-              iconPath: Assets.speedoMeter,
-              title: 'Power Factor',
-              value: powerFactor,
+            Expanded(
+              child: PowerClampInfoCard(
+                iconPath: Assets.speedoMeter,
+                title: 'Power Factor',
+                value: powerFactor,
+              ),
             ),
           ],
         ),

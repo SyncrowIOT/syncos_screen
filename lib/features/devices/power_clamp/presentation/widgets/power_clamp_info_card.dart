@@ -17,36 +17,30 @@ class PowerClampInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: DefaultContainer(
-        height: 55,
-        color: context.appTheme.colors.background.neutralSecondary,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: SvgPicture.asset(
-                iconPath,
-              ),
+    return DefaultContainer(
+      height: 55,
+      color: context.appTheme.colors.background.neutralSecondary,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(child: SvgPicture.asset(iconPath)),
+          Expanded(
+            flex: 3,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: context.appTheme.typography.body.medium,
+                ),
+                Text(
+                  value,
+                  style: context.appTheme.typography.body.medium,
+                ),
+              ],
             ),
-            Expanded(
-              flex: 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: context.appTheme.typography.body.medium,
-                  ),
-                  Text(
-                    value,
-                    style: context.appTheme.typography.body.medium,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
