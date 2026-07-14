@@ -1,77 +1,78 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:syncos_screen/app/router/auth_controller.dart';
 
+AuthController _makeSut({
+  required Future<bool> Function() ensureAuthenticated,
+}) {
+  final sut = AuthController(ensureAuthenticated: ensureAuthenticated);
+  addTearDown(sut.dispose);
+  return sut;
+}
+
 void main() {
-  group('AuthController', () {
-    test('starts in loading state', () {
-      final controller = AuthController(
-        ensureAuthenticated: () => Future<bool>.delayed(
-          const Duration(seconds: 1),
-          () => true,
-        ),
-      );
-      addTearDown(controller.dispose);
+  test('starts in loading state', () {
+    final sut = _makeSut(
+      ensureAuthenticated: () => Future<bool>.delayed(
+        const Duration(seconds: 1),
+        () => true,
+      ),
+    );
 
-      expect(controller.status, AuthStatus.loading);
-    });
+    expect(sut.status, AuthStatus.loading);
+  });
 
-    test('transitions to authenticated when ensureAuthenticated succeeds',
-        () async {
-      final controller = AuthController(
-        ensureAuthenticated: () async => true,
-      );
-      addTearDown(controller.dispose);
+  test(
+    'transitions to authenticated when ensureAuthenticated succeeds',
+    () async {
+      final sut = _makeSut(ensureAuthenticated: () async => true);
 
       final statuses = <AuthStatus>[];
-      controller.addListener(() => statuses.add(controller.status));
+      sut.addListener(() => statuses.add(sut.status));
 
       await Future<void>.delayed(Duration.zero);
 
-      expect(controller.status, AuthStatus.authenticated);
+      expect(sut.status, AuthStatus.authenticated);
       expect(statuses, contains(AuthStatus.authenticated));
-    });
+    },
+  );
 
-    test('transitions to error when ensureAuthenticated fails', () async {
-      final controller = AuthController(
-        ensureAuthenticated: () async => false,
-      );
-      addTearDown(controller.dispose);
+  test('transitions to error when ensureAuthenticated fails', () async {
+    final sut = _makeSut(ensureAuthenticated: () async => false);
 
-      await Future<void>.delayed(Duration.zero);
+    await Future<void>.delayed(Duration.zero);
 
-      expect(controller.status, AuthStatus.error);
-    });
+    expect(sut.status, AuthStatus.error);
+  });
 
-    test('transitions to error when ensureAuthenticated throws', () async {
-      final controller = AuthController(
-        ensureAuthenticated: () async => throw Exception('boom'),
-      );
-      addTearDown(controller.dispose);
+  test('transitions to error when ensureAuthenticated throws', () async {
+    final sut = _makeSut(
+      ensureAuthenticated: () async => throw Exception('boom'),
+    );
 
-      await Future<void>.delayed(Duration.zero);
+    await Future<void>.delayed(Duration.zero);
 
-      expect(controller.status, AuthStatus.error);
-    });
+    expect(sut.status, AuthStatus.error);
+  });
 
-    test('retry re-runs ensureAuthenticated and can recover from error',
-        () async {
+  test(
+    'retry re-runs ensureAuthenticated and can recover from error',
+    () async {
       var attempt = 0;
-      final controller = AuthController(
+      final sut = _makeSut(
         ensureAuthenticated: () async {
           attempt++;
           return attempt > 1;
         },
       );
-      addTearDown(controller.dispose);
 
       await Future<void>.delayed(Duration.zero);
-      expect(controller.status, AuthStatus.error);
+      expect(sut.status, AuthStatus.error);
 
-      controller.retry();
-      expect(controller.status, AuthStatus.loading);
+      sut.retry();
+      expect(sut.status, AuthStatus.loading);
 
       await Future<void>.delayed(Duration.zero);
-      expect(controller.status, AuthStatus.authenticated);
-    });
-  });
+      expect(sut.status, AuthStatus.authenticated);
+    },
+  );
 }
