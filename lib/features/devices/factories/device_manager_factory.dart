@@ -2,7 +2,7 @@ import 'package:device_manager/device_manager.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:syncos_screen/features/devices/data/services/debounced_control_device_service_decorator.dart';
 import 'package:syncos_screen/services/api/networking_service_factory.dart';
-import 'package:syncos_screen/services/realtime/firebase_device_status_realtime_service.dart';
+import 'package:syncos_screen/services/realtime/remote_device_status_realtime_service.dart';
 
 abstract final class DeviceManagerFactory {
   static DevicesManagerBloc<T> create<T>({
@@ -28,7 +28,7 @@ abstract final class DeviceManagerFactory {
       batchStatusService: RemoteBatchStatusService(
         networkingService: dioNetworkingService,
       ),
-      realtimeService: FirebaseDeviceStatusRealtimeService(
+      realtimeService: RemoteDeviceStatusRealtimeService(
         databaseReference: FirebaseDatabase.instance.ref('device-status'),
       ),
     );

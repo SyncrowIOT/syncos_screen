@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:device_manager/device_manager.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class FirebaseDeviceStatusRealtimeService
-    implements DeviceStatusRealtimeService {
-  FirebaseDeviceStatusRealtimeService({
+class RemoteDeviceStatusRealtimeService implements DeviceStatusRealtimeService {
+  RemoteDeviceStatusRealtimeService({
     required this._databaseReference,
   });
 
