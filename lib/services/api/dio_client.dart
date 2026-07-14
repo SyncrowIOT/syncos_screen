@@ -4,27 +4,27 @@ import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
 import 'package:syncos_screen/services/api/local_secure_token_store.dart';
 
+typedef _DioClientState = ({
+  Dio dio,
+  RemoteTokenRefreshService tokenRefreshService,
+});
+
 abstract final class DioClient {
-  static Dio? _dio;
+  static _DioClientState? _state;
   static String? _projectUuid;
-  static late RemoteTokenRefreshService? _tokenRefreshService;
 
   static final _tokenStore = LocalSecureTokenStore();
 
-  static Dio get instance {
-    final existing = _dio;
-    if (existing != null) {
-      return existing;
-    }
-    return _makeDio();
+  static Dio get instance => _ensureInitialized().dio;
+
+  static RemoteTokenRefreshService get tokenRefreshService =>
+      _ensureInitialized().tokenRefreshService;
+
+  static _DioClientState _ensureInitialized() {
+    return _state ??= _makeDio();
   }
 
-  static RemoteTokenRefreshService get tokenRefreshService {
-    instance;
-    return _tokenRefreshService!;
-  }
-
-  static Dio _makeDio() {
+  static _DioClientState _makeDio() {
     final dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
@@ -36,13 +36,11 @@ abstract final class DioClient {
         validateStatus: (status) => true,
       ),
     );
-    _dio = dio;
     final tokenRefreshService = RemoteTokenRefreshService(
       dio: dio,
       tokenStore: _tokenStore,
       refreshPath: ApiEndpoints.refreshToken,
     );
-    _tokenRefreshService = tokenRefreshService;
     dio.interceptors.addAll([
       ProjectUuidInterceptor(
         tokenStore: _tokenStore,
@@ -56,6 +54,6 @@ abstract final class DioClient {
         tokenRefreshService: tokenRefreshService,
       ),
     ]);
-    return dio;
+    return (dio: dio, tokenRefreshService: tokenRefreshService);
   }
 }
