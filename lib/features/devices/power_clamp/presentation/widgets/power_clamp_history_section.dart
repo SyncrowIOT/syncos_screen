@@ -28,8 +28,8 @@ class PowerClampHistorySection extends StatelessWidget {
     >(
       builder: (context, state) {
         return switch (state) {
-          PowerClampDeviceHistoryLoading() => const Expanded(
-            child: Center(child: CircularProgressIndicator()),
+          PowerClampDeviceHistoryLoading() => const Center(
+            child: CircularProgressIndicator(),
           ),
           PowerClampDeviceHistoryFailure(:final errorMessage) =>
             PowerClampFailureState(message: errorMessage, onRetry: onRetry),
@@ -51,11 +51,9 @@ class PowerClampHistorySection extends StatelessWidget {
       return const PowerClampEmptyState();
     }
 
-    return Expanded(
-      child: PowerClampChartSection(
-        chartData: displayData,
-        selectedDate: selectedDate,
-      ),
+    return PowerClampChartSection(
+      chartData: displayData,
+      selectedDate: selectedDate,
     );
   }
 }

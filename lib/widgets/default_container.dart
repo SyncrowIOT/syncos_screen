@@ -1,5 +1,6 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 class DefaultContainer extends StatelessWidget {
   const DefaultContainer({
@@ -9,37 +10,40 @@ class DefaultContainer extends StatelessWidget {
     this.width,
     this.color,
     this.boxConstraints,
-    this.margin = const EdgeInsets.only(right: 3, bottom: 3),
-    this.padding = const EdgeInsets.all(10),
+    this.margin,
+    this.padding,
     this.onTap,
-    this.borderRadius = const BorderRadius.all(Radius.circular(20)),
+    this.borderRadius,
   });
 
   final double? height;
   final double? width;
   final Widget child;
   final BoxConstraints? boxConstraints;
-  final EdgeInsets margin;
-  final EdgeInsets padding;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
   final Color? color;
   final void Function()? onTap;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
+    final resolvedBorderRadius =
+        borderRadius ?? BorderRadius.all(Radius.circular(20.s(context)));
     return Material(
       type: MaterialType.card,
-      borderRadius: borderRadius,
+      borderRadius: resolvedBorderRadius,
       color: color ?? context.appTheme.colors.background.neutralPrimary,
       child: InkWell(
         onTap: onTap,
-        borderRadius: borderRadius,
+        borderRadius: resolvedBorderRadius,
         child: Container(
           height: height,
           width: width,
           constraints: boxConstraints,
-          margin: margin,
-          padding: padding,
+          margin: margin ??
+              EdgeInsets.only(right: 3.s(context), bottom: 3.s(context)),
+          padding: padding ?? EdgeInsets.all(10.s(context)),
           child: child,
         ),
       ),

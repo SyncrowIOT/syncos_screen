@@ -8,14 +8,12 @@ class PowerClampInfoCard extends StatelessWidget {
     required this.iconPath,
     required this.title,
     required this.value,
-    required this.unit,
     super.key,
   });
 
   final String iconPath;
   final String title;
   final String value;
-  final String unit;
 
   @override
   Widget build(BuildContext context) {
@@ -40,18 +38,9 @@ class PowerClampInfoCard extends StatelessWidget {
                     title,
                     style: context.appTheme.typography.body.medium,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        value,
-                        style: context.appTheme.typography.body.medium,
-                      ),
-                      Text(
-                        unit,
-                        style: context.appTheme.typography.body.medium,
-                      ),
-                    ],
+                  Text(
+                    value,
+                    style: context.appTheme.typography.body.medium,
                   ),
                 ],
               ),

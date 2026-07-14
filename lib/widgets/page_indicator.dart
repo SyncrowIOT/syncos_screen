@@ -1,5 +1,6 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 class PageIndicator extends StatelessWidget {
   const PageIndicator({
@@ -23,8 +24,10 @@ class PageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaledDotSize = dotSize.s(context);
     return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(vertical: 10),
+      padding:
+          padding ?? EdgeInsets.symmetric(vertical: 10.s(context)),
       child: ValueListenableBuilder<int>(
         valueListenable: currentPageNotifier,
         builder: (context, currentPage, _) {
@@ -38,13 +41,13 @@ class PageIndicator extends StatelessWidget {
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 margin: EdgeInsets.symmetric(
-                  horizontal: dotSpacing ?? 4,
+                  horizontal: (dotSpacing ?? 4).s(context),
                 ),
-                height: dotSize,
-                width: dotSize,
+                height: scaledDotSize,
+                width: scaledDotSize,
                 decoration: BoxDecoration(
                   color: color,
-                  borderRadius: BorderRadius.circular(dotSize / 2),
+                  borderRadius: BorderRadius.circular(scaledDotSize / 2),
                 ),
               );
             }),

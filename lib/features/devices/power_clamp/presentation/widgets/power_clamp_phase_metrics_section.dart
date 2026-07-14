@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_info_card.dart';
 import 'package:syncos_screen/utils/assets.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 class PowerClampPhaseMetricsSection extends StatelessWidget {
   const PowerClampPhaseMetricsSection({
@@ -27,17 +28,15 @@ class PowerClampPhaseMetricsSection extends StatelessWidget {
               iconPath: Assets.voltageIcon,
               title: 'Voltage',
               value: voltage,
-              unit: ' V',
             ),
             PowerClampInfoCard(
               iconPath: Assets.voltMeterIcon,
               title: 'Current',
               value: current,
-              unit: ' A',
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10.s(context)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -45,13 +44,11 @@ class PowerClampPhaseMetricsSection extends StatelessWidget {
               iconPath: Assets.powerActiveIcon,
               title: 'Active Power',
               value: activePower,
-              unit: ' w',
             ),
             PowerClampInfoCard(
               iconPath: Assets.speedoMeter,
               title: 'Power Factor',
               value: powerFactor,
-              unit: '',
             ),
           ],
         ),

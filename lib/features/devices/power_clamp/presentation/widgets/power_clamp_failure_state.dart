@@ -1,5 +1,6 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 class PowerClampFailureState extends StatelessWidget {
   const PowerClampFailureState({
@@ -13,17 +14,15 @@ class PowerClampFailureState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Center(
-        child: Column(
-          spacing: 16,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTitle(context),
-            _buildErrorMessage(context),
-            _buildRetryButton(context),
-          ],
-        ),
+    return Center(
+      child: Column(
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildTitle(context),
+          _buildErrorMessage(context),
+          _buildRetryButton(context),
+        ],
       ),
     );
   }
@@ -34,7 +33,7 @@ class PowerClampFailureState extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: context.appTheme.colors.text.danger,
-        fontSize: 20,
+        fontSize: 20.s(context),
         fontWeight: FontWeight.w600,
         height: 1.2,
       ),
@@ -43,7 +42,7 @@ class PowerClampFailureState extends StatelessWidget {
 
   Widget _buildErrorMessage(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: 32.s(context)),
       child: Text(
         message.isNotEmpty
             ? message
@@ -52,7 +51,7 @@ class PowerClampFailureState extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: context.appTheme.colors.text.danger,
-          fontSize: 14,
+          fontSize: 14.s(context),
           fontWeight: FontWeight.w400,
           height: 1.4,
         ),

@@ -8,6 +8,7 @@ import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_general_metrics_section.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_history_section.dart';
 import 'package:syncos_screen/features/devices/power_clamp/presentation/widgets/power_clamp_phase_metrics_section.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 import 'package:syncos_screen/widgets/default_container.dart';
 import 'package:syncos_screen/widgets/month_year_selector.dart';
 
@@ -77,67 +78,76 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
 
     return DefaultContainer(
       child: Padding(
-        padding: const EdgeInsets.only(
-          left: 5,
-          right: 5,
-          top: 10,
-          bottom: 10,
+        padding: EdgeInsets.only(
+          left: 5.s(context),
+          right: 5.s(context),
+          top: 10.s(context),
+          bottom: 10.s(context),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PowerClampEnergyConsumptionHeader(
-              title: widget.title,
-              energyConsumption: energyConsumed,
-            ),
-            const SizedBox(height: 10),
-            if (widget.isGeneral)
-              PowerClampGeneralMetricsSection(
-                activePower: widget.generalData?.active ?? '--',
-                current: widget.generalData?.current ?? '--',
-                frequency: widget.generalData?.frequency ?? '--',
-              )
-            else
-              PowerClampPhaseMetricsSection(
-                voltage: widget.phaseData?.voltage ?? '--',
-                current: widget.phaseData?.current ?? '--',
-                activePower: widget.phaseData?.activePower ?? '--',
-                powerFactor: widget.phaseData?.powerFactor ?? '--',
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 900.s(context)),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PowerClampEnergyConsumptionHeader(
+                    title: widget.title,
+                    energyConsumption: energyConsumed,
+                  ),
+                  SizedBox(height: 10.s(context)),
+                  if (widget.isGeneral)
+                    PowerClampGeneralMetricsSection(
+                      activePower: widget.generalData?.active ?? '--',
+                      current: widget.generalData?.current ?? '--',
+                      frequency: widget.generalData?.frequency ?? '--',
+                    )
+                  else
+                    PowerClampPhaseMetricsSection(
+                      voltage: widget.phaseData?.voltage ?? '--',
+                      current: widget.phaseData?.current ?? '--',
+                      activePower: widget.phaseData?.activePower ?? '--',
+                      powerFactor: widget.phaseData?.powerFactor ?? '--',
+                    ),
+                  SizedBox(height: 10.s(context)),
+                  PowerClampConsumptionInfoSection(
+                    isGeneral: widget.isGeneral,
+                    phaseType: widget.phaseType,
+                    dateTimeSelected: PowerClampDateRangeFormatter.monthRange(
+                      widget.selectedDateNotifier.value,
+                    ),
+                  ),
+                  SizedBox(height: 10.s(context)),
+                  SizedBox(
+                    height: 220.s(context),
+                    child: ValueListenableBuilder<DateTime>(
+                      valueListenable: widget.selectedDateNotifier,
+                      builder: (context, selectedDate, _) {
+                        return PowerClampHistorySection(
+                          isGeneral: widget.isGeneral,
+                          phaseType: widget.phaseType,
+                          selectedDate: selectedDate,
+                          onRetry: _fetchHistoryData,
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 30.s(context)),
+                  ValueListenableBuilder<DateTime>(
+                    valueListenable: widget.selectedDateNotifier,
+                    builder: (context, selectedDate, _) {
+                      return MonthYearSelector(
+                        selectedDate: selectedDate,
+                        onDateChanged: (newDate) {
+                          widget.selectedDateNotifier.value = newDate;
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
-            const SizedBox(height: 10),
-            PowerClampConsumptionInfoSection(
-              isGeneral: widget.isGeneral,
-              phaseType: widget.phaseType,
-              dateTimeSelected: PowerClampDateRangeFormatter.monthRange(
-                widget.selectedDateNotifier.value,
-              ),
             ),
-            const SizedBox(height: 10),
-            ValueListenableBuilder<DateTime>(
-              valueListenable: widget.selectedDateNotifier,
-              builder: (context, selectedDate, _) {
-                return PowerClampHistorySection(
-                  isGeneral: widget.isGeneral,
-                  phaseType: widget.phaseType,
-                  selectedDate: selectedDate,
-                  onRetry: _fetchHistoryData,
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-            ValueListenableBuilder<DateTime>(
-              valueListenable: widget.selectedDateNotifier,
-              builder: (context, selectedDate, _) {
-                return MonthYearSelector(
-                  selectedDate: selectedDate,
-                  onDateChanged: (newDate) {
-                    widget.selectedDateNotifier.value = newDate;
-                  },
-                );
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -23,19 +23,16 @@ class PowerClampGeneralMetricsSection extends StatelessWidget {
           iconPath: Assets.powerActiveIcon,
           title: 'Active',
           value: activePower,
-          unit: ' w',
         ),
         PowerClampInfoCard(
           iconPath: Assets.voltMeterIcon,
           title: 'Current',
           value: current,
-          unit: ' A',
         ),
         PowerClampInfoCard(
           iconPath: Assets.frequencyIcon,
           title: 'Frequency',
           value: frequency,
-          unit: ' Hz',
         ),
       ],
     );

@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:design_system/design_system.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:syncos_screen/features/devices/power_clamp/data/energy_data.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 abstract final class PowerClampChartConfig {
   static LineTouchData lineTouchData(BuildContext context) {
@@ -11,14 +14,14 @@ abstract final class PowerClampChartConfig {
         getTooltipColor: (touchTooltipItem) {
           return context.appTheme.colors.background.neutralPrimary;
         },
-        tooltipPadding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 8,
+        tooltipPadding: EdgeInsets.symmetric(
+          horizontal: 10.s(context),
+          vertical: 8.s(context),
         ),
         tooltipBorder: BorderSide(
           color: context.appTheme.colors.text.bodySubtle,
         ),
-        tooltipBorderRadius: BorderRadius.circular(12),
+        tooltipBorderRadius: BorderRadius.circular(12.s(context)),
         getTooltipItems: (touchedSpots) {
           return touchedSpots.map((spot) {
             return LineTooltipItem(
@@ -26,7 +29,7 @@ abstract final class PowerClampChartConfig {
               TextStyle(
                 color: context.appTheme.colors.text.brand,
                 fontWeight: FontWeight.w400,
-                fontSize: 9,
+                fontSize: max(9,9.s(context)),
               ),
             );
           }).toList();
@@ -35,7 +38,10 @@ abstract final class PowerClampChartConfig {
     );
   }
 
-  static FlTitlesData titlesData(List<EnergyData> chartData) {
+  static FlTitlesData titlesData(
+    BuildContext context,
+    List<EnergyData> chartData,
+  ) {
     return FlTitlesData(
       bottomTitles: const AxisTitles(),
       leftTitles: const AxisTitles(),
@@ -43,18 +49,18 @@ abstract final class PowerClampChartConfig {
       topTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          reservedSize: 70,
+          reservedSize: 70.s(context),
           interval: 1,
           getTitlesWidget: (value, meta) {
             final index = value.toInt();
             if (index >= 0 && index < chartData.length) {
               return Padding(
-                padding: const EdgeInsets.only(bottom: 24),
+                padding: EdgeInsets.only(bottom: 24.s(context)),
                 child: RotatedBox(
                   quarterTurns: -1,
                   child: Text(
                     chartData[index].time,
-                    style: const TextStyle(fontSize: 10),
+                    style: TextStyle(fontSize: max(9,10.s(context))),
                   ),
                 ),
               );
@@ -111,7 +117,7 @@ abstract final class PowerClampChartConfig {
       ),
       dotData: const FlDotData(show: false),
       isStrokeCapRound: true,
-      barWidth: 5,
+      barWidth: 5.s(context),
     );
   }
 }

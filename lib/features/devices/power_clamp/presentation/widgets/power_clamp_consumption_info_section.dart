@@ -1,5 +1,6 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 class PowerClampConsumptionInfoSection extends StatelessWidget {
   const PowerClampConsumptionInfoSection({
@@ -23,26 +24,26 @@ class PowerClampConsumptionInfoSection extends StatelessWidget {
           children: [
             Text(
               isGeneral ? 'Total consumption' : phaseType,
-              style: context.appTheme.typography.body.medium,
+              style: context.appTheme.typography.body.medium.scaled(context),
             ),
             Text(
               dateTimeSelected,
-              style: const TextStyle(
-                fontSize: 8,
+              style: TextStyle(
+                fontSize: 8.s(context),
                 fontWeight: FontWeight.w400,
               ),
             ),
           ],
         ),
          Row(
-          children: [ 
+          children: [
             Text(
               '1000.00 ',
-              style: context.appTheme.typography.body.medium,
+              style: context.appTheme.typography.body.medium.scaled(context),
             ),
             Text(
               'kWh',
-              style: context.appTheme.typography.body.medium,
+              style: context.appTheme.typography.body.medium.scaled(context),
             ),
           ],
         ),

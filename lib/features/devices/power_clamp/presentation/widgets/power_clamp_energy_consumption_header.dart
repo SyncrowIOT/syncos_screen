@@ -1,5 +1,6 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 class PowerClampEnergyConsumptionHeader extends StatelessWidget {
   const PowerClampEnergyConsumptionHeader({
@@ -15,7 +16,7 @@ class PowerClampEnergyConsumptionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 10,
+      spacing: 10.s(context),
       children: [
         const Text('Energy usage'),
         Row(
@@ -24,13 +25,15 @@ class PowerClampEnergyConsumptionHeader extends StatelessWidget {
           children: [
             Text(
               title,
-              style: context.appTheme.typography.body.large,
+              style: context.appTheme.typography.body.large.scaled(context),
             ),
             Row(
               children: [
                 Text(
                   energyConsumption,
-                  style: context.appTheme.typography.body.large,
+                  style: context.appTheme.typography.body.large.scaled(
+                    context,
+                  ),
                 ),
                 const Text(' kWh'),
               ],

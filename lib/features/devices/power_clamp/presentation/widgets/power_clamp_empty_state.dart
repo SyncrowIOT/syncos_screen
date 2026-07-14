@@ -1,21 +1,20 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
+import 'package:syncos_screen/utils/responsive/app_scale.dart';
 
 class PowerClampEmptyState extends StatelessWidget {
   const PowerClampEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 16,
-          children: [
-            _buildTitle(context),
-            _buildSubtitle(context),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: 16,
+        children: [
+          _buildTitle(context),
+          _buildSubtitle(context),
+        ],
       ),
     );
   }
@@ -26,7 +25,7 @@ class PowerClampEmptyState extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: context.appTheme.colors.text.body,
-        fontSize: 20,
+        fontSize: 20.s(context),
         fontWeight: FontWeight.w600,
       ),
     );
@@ -38,7 +37,7 @@ class PowerClampEmptyState extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: context.appTheme.colors.text.bodySubtle,
-        fontSize: 14,
+        fontSize: 14.s(context),
         fontWeight: FontWeight.w400,
         height: 1.4,
       ),
