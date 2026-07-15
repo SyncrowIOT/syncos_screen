@@ -23,28 +23,24 @@ class PowerClampGeneralMetricsSection extends StatelessWidget {
           child: PowerClampInfoCard(
             iconPath: Assets.powerActiveIcon,
             title: 'Active',
-            value: _withUnit(activePower, 'W'),
+            value: activePower,
           ),
         ),
         Expanded(
           child: PowerClampInfoCard(
             iconPath: Assets.voltMeterIcon,
             title: 'Current',
-            value: _withUnit(current, 'A'),
+            value: current,
           ),
         ),
         Expanded(
           child: PowerClampInfoCard(
             iconPath: Assets.frequencyIcon,
             title: 'Frequency',
-            value: _withUnit(frequency, 'Hz'),
+            value: frequency,
           ),
         ),
       ],
     );
-  }
-
-  String _withUnit(String value, String unit) {
-    return value == '--' ? value : '$value $unit';
   }
 }

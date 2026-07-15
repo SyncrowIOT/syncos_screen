@@ -25,20 +25,11 @@ class PowerClampEnergyConsumptionHeader extends StatelessWidget {
           children: [
             Text(
               title,
-              style: context.appTheme.typography.body.large.scaledFontSize(
-                context,
-              ),
+              style: context.appTheme.typography.body.large.scaledFontSize(context),
             ),
-            Row(
-              children: [
-                Text(
-                  energyConsumption,
-                  style: context.appTheme.typography.body.large.scaledFontSize(
-                    context,
-                  ),
-                ),
-                const Text(' kWh'),
-              ],
+            Text(
+              '$energyConsumption kW',
+              style: context.appTheme.typography.body.large.scaledFontSize(context),
             ),
           ],
         ),

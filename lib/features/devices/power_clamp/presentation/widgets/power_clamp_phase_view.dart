@@ -73,7 +73,7 @@ class _PowerClampPhaseViewState extends State<PowerClampPhaseView> {
   Widget build(BuildContext context) {
     final energyConsumed = widget.isGeneral
         ? widget.generalData?.energyConsumed.toString() ?? '--'
-        : widget.phaseData?.energyConsumed.toString() ?? '--';
+        : widget.phaseData?.energyConsumed ?? '--';
 
     return PowerClampScrollableSection(
       children: [
