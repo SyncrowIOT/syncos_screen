@@ -18,10 +18,19 @@ class _PowerClampViewState extends State<PowerClampView> {
   final _currentPageNotifier = ValueNotifier<int>(0);
   final _selectedDateNotifier = ValueNotifier<DateTime>(DateTime.now());
 
+  late DevicesManagerBloc<PowerClampStatusModel> _devicesManagerBloc;
+
   @override
   void initState() {
     _pageController.addListener(_handlePageChange);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _devicesManagerBloc = context
+        .read<DevicesManagerBloc<PowerClampStatusModel>>();
   }
 
   void _handlePageChange() {
@@ -31,9 +40,7 @@ class _PowerClampViewState extends State<PowerClampView> {
 
   @override
   void dispose() {
-    context.read<DevicesManagerBloc<PowerClampStatusModel>>().add(
-      const StopListeningEvent(),
-    );
+    _devicesManagerBloc.add(const StopListeningEvent());
     _pageController
       ..removeListener(_handlePageChange)
       ..dispose();
