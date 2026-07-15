@@ -13,7 +13,17 @@ class AuthController extends ChangeNotifier {
 
   AuthStatus status = AuthStatus.loading;
 
-  Future<void> _run() async {
+  Future<void>? _inFlight;
+
+  Future<void> _run() {
+    final inFlight = _inFlight;
+    if (inFlight != null) return inFlight;
+    final future = _runOnce();
+    _inFlight = future;
+    return future;
+  }
+
+  Future<void> _runOnce() async {
     status = AuthStatus.loading;
     notifyListeners();
     try {
@@ -22,8 +32,9 @@ class AuthController extends ChangeNotifier {
     } on Object {
       status = AuthStatus.error;
     }
+    _inFlight = null;
     notifyListeners();
   }
 
-  void retry() => _run();
+  void retry() => unawaited(_run());
 }
