@@ -25,18 +25,26 @@ default credentials used at startup, reusing the existing retry/backoff
 logic. Unlike the startup flow, this recovery must be silent: no splash
 screen, no visible navigation away from the current screen. Only if the
 re-login ultimately fails does the app surface the existing `/auth-error`
-screen.
+screen. If the re-login succeeds, the original request that triggered the
+401 is retried once with the new access token, so the screen that made that
+call actually gets its data instead of surfacing a stale error.
 
 ## Non-goals
 
-- Retrying the original request that triggered the 401 once re-login
-  succeeds. It surfaces its error to the caller as it does today (consistent
-  with how transport failures during refresh are already handled); the next
-  request after recovery just works with fresh tokens.
 - Any change to the shared `frontend-microservices` package. All changes stay
-  in `syncos-screen`, using the `onRefreshFailed` hooks it already exposes.
+  in `syncos-screen`, using the `onRefreshFailed` hooks it already exposes,
+  plus a new app-level Dio interceptor.
 - Interactive login UI of any kind — this app doesn't have one and isn't
   getting one.
+
+**Revised 2026-07-15 (later same day):** the original request retry was
+initially scoped as a non-goal — the assumption was that surfacing the
+error and letting the *next* request pick up fresh tokens was good enough.
+In practice, testing surfaced that the screen making the original call
+(e.g. the Power Clamp chart on a date-filter change) never re-fetches on
+its own, so it just stays empty even though the session silently recovered
+moments later. Retrying the original request is now in scope; see
+"Original-request retry" below.
 
 ## Design
 
@@ -58,11 +66,68 @@ screen.
 6. `AuthController.status` goes straight to `authenticated` (no-op for the
    router — already on `/`) or `error` (router redirects to `/auth-error`,
    same as the startup failure path).
+7. Meanwhile, back where the original 401 was thrown: `TokenRefreshInterceptor`
+   already gave up and called `handler.next(err)` (step 3) before the
+   re-login even finished — the two happen concurrently, not sequentially.
+   A new app-level `SessionRecoveryInterceptor` sees that forwarded error,
+   awaits the same recovery attempt from step 5 via
+   `AuthController.awaitRecovery()`, and once it settles either retries the
+   original request with the fresh access token (recovered) or forwards the
+   original error (not recovered — `/auth-error` is already showing anyway).
 
 Transport-level failures on the refresh call itself (timeouts, connection
 errors) do **not** trigger `onRefreshFailed` — that's existing behavior in
 the shared package and is unchanged. This feature only engages when the
 refresh endpoint deterministically rejects the session.
+
+### Original-request retry
+
+`TokenRefreshInterceptor.handleError` (in the shared package) forwards the
+original error via `handler.next(err)` as soon as its own refresh attempt
+fails — it has no way to know about, or wait for, the app-level re-login
+that `onRefreshFailed` just kicked off. Retrying the original request
+therefore can't happen inside the shared package's interceptor; it needs a
+second, app-level interceptor that sees the error *after* the shared one
+gives up.
+
+Dio runs `onError` in **reverse** of the order interceptors were added
+(each interceptor wraps the ones added before it, onion-style). So a new
+`SessionRecoveryInterceptor`, added to `dio.interceptors` *before*
+`TokenRefreshInterceptor`, has its `onError` run *after*
+`TokenRefreshInterceptor`'s — exactly the ordering needed.
+
+`SessionRecoveryInterceptor` (new file,
+`lib/services/api/session_recovery_interceptor.dart`):
+- On a 401 (skipping requests already flagged via
+  `skipTokenRefreshExtraKey` or a new `skipSessionRecoveryExtraKey`, the
+  latter set on its own retried request to prevent retrying the same
+  request twice if the retry itself 401s again):
+  1. `await`s an injected `Future<bool> Function() awaitRecovery` —
+     wired to `AuthController.awaitRecovery()`.
+  2. If it resolves `false` (no recovery, or recovery failed), forwards
+     the original error via `handler.next(err)` — same behavior as today.
+  3. If it resolves `true`, reads the fresh access token from the
+     `TokenStore`, rebuilds the original request's headers with it, and
+     retries via `dio.fetch`, resolving the handler with that response on
+     success or forwarding whatever error the retry produced.
+
+`AuthController.awaitRecovery()` (new method): resolves once the
+controller's current in-flight recovery run (if any) settles, then reports
+`status == AuthStatus.authenticated`. If no recovery is in flight when
+called, it resolves immediately with the current status — this covers the
+case where, by the time the interceptor runs, the recovery (kicked off
+synchronously from inside `RemoteTokenRefreshService._refresh()`, before
+its `StateError` even propagates back up through
+`TokenRefreshInterceptor`) has already finished.
+
+`DioClient` wiring mirrors the existing `onRefreshFailed` indirection: a
+new static `Future<bool> Function()? _awaitSessionRecovery` field, a
+`configureSessionRecoveryWaiter(...)` setter, and the interceptor is
+constructed with `awaitRecovery: () => _awaitSessionRecovery?.call() ??
+Future.value(false)`. Wired in `app.dart` alongside the existing handler:
+```dart
+DioClient.configureSessionRecoveryWaiter(_authController.awaitRecovery);
+```
 
 ### Components
 

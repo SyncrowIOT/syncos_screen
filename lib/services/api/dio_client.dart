@@ -4,6 +4,7 @@ import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
 import 'package:syncos_screen/services/api/local_secure_token_store.dart';
+import 'package:syncos_screen/services/api/session_recovery_interceptor.dart';
 
 typedef _DioClientState = ({
   Dio dio,
@@ -14,6 +15,7 @@ abstract final class DioClient {
   static _DioClientState? _state;
   static String? _projectUuid;
   static void Function()? _onSessionExpired;
+  static Future<bool> Function()? _awaitSessionRecovery;
 
   static final _tokenStore = LocalSecureTokenStore();
 
@@ -35,6 +37,21 @@ abstract final class DioClient {
   /// handler without going through a real refresh-token failure.
   @visibleForTesting
   static void debugInvokeSessionExpiredHandler() => _onSessionExpired?.call();
+
+  /// Registers the function `SessionRecoveryInterceptor` awaits after a
+  /// request's 401 survives `TokenRefreshInterceptor`'s own refresh
+  /// attempt: it resolves once the session-expired recovery settles,
+  /// reporting whether the session ended up authenticated. Typically wired
+  /// to `AuthController.awaitRecovery`.
+  static void configureSessionRecoveryWaiter(Future<bool> Function() waiter) {
+    _awaitSessionRecovery = waiter;
+  }
+
+  /// Test-only escape hatch to invoke the configured session-recovery
+  /// waiter without going through a real request/interceptor chain.
+  @visibleForTesting
+  static Future<bool> debugAwaitSessionRecovery() =>
+      _awaitSessionRecovery?.call() ?? Future.value(false);
 
   static _DioClientState _ensureInitialized() {
     return _state ??= _makeDio();
@@ -64,6 +81,15 @@ abstract final class DioClient {
         projectUuidProvider: () async => _projectUuid,
       ),
       HTTPInterceptor(tokenStore: _tokenStore),
+      // Runs after TokenRefreshInterceptor's onError (Dio runs onError in
+      // reverse of interceptor-list order), so it only sees a 401 once
+      // TokenRefreshInterceptor has already tried and failed to refresh.
+      SessionRecoveryInterceptor(
+        dio: dio,
+        tokenStore: _tokenStore,
+        awaitRecovery: () =>
+            _awaitSessionRecovery?.call() ?? Future.value(false),
+      ),
       TokenRefreshInterceptor(
         dio: dio,
         tokenStore: _tokenStore,

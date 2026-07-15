@@ -47,4 +47,15 @@ class AuthController extends ChangeNotifier {
   /// the run ultimately fails; success is invisible to the user. Used to
   /// recover from a mid-session refresh-token failure.
   void retrySilently() => unawaited(_run(silent: true));
+
+  /// Resolves once the current recovery attempt (if any) settles, then
+  /// reports whether the session ended up authenticated. If no recovery is
+  /// in flight, resolves immediately with the current status. Used by
+  /// `SessionRecoveryInterceptor` to retry a request that failed while the
+  /// session was being recovered.
+  Future<bool> awaitRecovery() async {
+    final inFlight = _inFlight;
+    if (inFlight != null) await inFlight;
+    return status == AuthStatus.authenticated;
+  }
 }

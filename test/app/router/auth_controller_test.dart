@@ -141,4 +141,32 @@ void main() {
       expect(sut.status, AuthStatus.error);
     },
   );
+
+  test(
+    'awaitRecovery resolves immediately with the current status when '
+    'no recovery is in flight',
+    () async {
+      final sut = _makeSut(ensureAuthenticated: () async => true);
+      await Future<void>.delayed(Duration.zero);
+      expect(sut.status, AuthStatus.authenticated);
+
+      expect(await sut.awaitRecovery(), isTrue);
+    },
+  );
+
+  test(
+    'awaitRecovery waits for an in-flight recovery and reports its outcome',
+    () async {
+      final sut = _makeSut(
+        ensureAuthenticated: () => Future<bool>.delayed(
+          const Duration(milliseconds: 10),
+          () => false,
+        ),
+      );
+
+      expect(sut.status, AuthStatus.loading);
+      expect(await sut.awaitRecovery(), isFalse);
+      expect(sut.status, AuthStatus.error);
+    },
+  );
 }

@@ -27,4 +27,14 @@ void main() {
       expect(callCount, 1);
     },
   );
+
+  test(
+    'configureSessionRecoveryWaiter wires a waiter '
+    'debugAwaitSessionRecovery can trigger',
+    () async {
+      DioClient.configureSessionRecoveryWaiter(() async => true);
+
+      expect(await DioClient.debugAwaitSessionRecovery(), isTrue);
+    },
+  );
 }
