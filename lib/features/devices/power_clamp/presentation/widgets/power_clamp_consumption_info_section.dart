@@ -32,10 +32,9 @@ class PowerClampConsumptionInfoSection extends StatelessWidget {
             ),
             Text(
               dateTimeSelected,
-              style: TextStyle(
-                fontSize: 8.scaledBy(context),
-                fontWeight: FontWeight.w400,
-              ),
+              style: context.appTheme.typography.label.large
+                  .copyWith(color: context.appTheme.colors.text.bodySubtle)
+                  .scaledFontSize(context),
             ),
           ],
         ),

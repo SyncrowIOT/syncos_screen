@@ -18,12 +18,16 @@ class PowerClampInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultContainer(
-      height: 55,
       color: context.appTheme.colors.background.neutralSecondary,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child: SvgPicture.asset(iconPath)),
+          Expanded(
+            child: SvgPicture.asset(
+              iconPath,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
           Expanded(
             flex: 3,
             child: Column(
@@ -31,11 +35,11 @@ class PowerClampInfoCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: context.appTheme.typography.body.medium,
+                  style: context.appTheme.typography.body.small,
                 ),
                 Text(
                   value,
-                  style: context.appTheme.typography.body.medium,
+                  style: context.appTheme.typography.body.small,
                 ),
               ],
             ),

@@ -15,7 +15,7 @@ import 'package:syncos_screen/services/auth/session_bootstrapper.dart';
 const _initialDevice = Device(
   uuid: '89c096bb-c291-432a-91e6-da3eb6b32226',
   name: 'Power Clamp',
-  productType: ProductType.powerClamp,
+  productType: ProductType.powerClamp2,
   productUuid: '',
   productName: 'Power Clamp',
   subspaceName: '',
