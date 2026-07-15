@@ -80,16 +80,16 @@ void main() {
     'retry ignores calls while a run is already in flight',
     () async {
       var callCount = 0;
-      final sut = _makeSut(
-        ensureAuthenticated: () async {
-          callCount++;
-          await Future<void>.delayed(const Duration(milliseconds: 10));
-          return true;
-        },
-      );
-
-      sut.retry();
-      sut.retry();
+      final sut =
+          _makeSut(
+              ensureAuthenticated: () async {
+                callCount++;
+                await Future<void>.delayed(const Duration(milliseconds: 10));
+                return true;
+              },
+            )
+            ..retry()
+            ..retry();
 
       await Future<void>.delayed(const Duration(milliseconds: 50));
 
