@@ -69,6 +69,9 @@ abstract final class DioClient {
         tokenStore: _tokenStore,
         refreshPath: ApiEndpoints.refreshToken,
         tokenRefreshService: tokenRefreshService,
+        // Backstop only: with validateStatus above, a refresh-endpoint
+        // rejection never throws, so this fires only on transport failures,
+        // which the interceptor itself filters out before calling back.
         onRefreshFailed: () => _onSessionExpired?.call(),
       ),
     ]);
