@@ -90,11 +90,20 @@ therefore can't happen inside the shared package's interceptor; it needs a
 second, app-level interceptor that sees the error *after* the shared one
 gives up.
 
-Dio runs `onError` in **reverse** of the order interceptors were added
-(each interceptor wraps the ones added before it, onion-style). So a new
-`SessionRecoveryInterceptor`, added to `dio.interceptors` *before*
+Dio runs `onError` (like `onRequest` and `onResponse`) in the **same FIFO
+order** interceptors were added — confirmed by reading `dio_mixin.dart`'s
+`fetch` implementation, which chains `.catchError()` calls in a single
+forward loop over `interceptors`, not a reversed one. So a new
+`SessionRecoveryInterceptor`, added to `dio.interceptors` **after**
 `TokenRefreshInterceptor`, has its `onError` run *after*
-`TokenRefreshInterceptor`'s — exactly the ordering needed.
+`TokenRefreshInterceptor`'s — exactly the ordering needed. (An earlier
+draft of this spec assumed the opposite — an "onion" reverse order — and
+that assumption shipped briefly: with `SessionRecoveryInterceptor` added
+*before* `TokenRefreshInterceptor`, it saw every 401 first, before any
+refresh was attempted, and retried immediately with the still-stale token.
+Caught via manual testing; fixed by swapping the order, with a regression
+test that runs both interceptors together and fails/times out if the order
+is wrong again.)
 
 `SessionRecoveryInterceptor` (new file,
 `lib/services/api/session_recovery_interceptor.dart`):

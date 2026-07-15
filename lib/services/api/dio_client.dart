@@ -81,15 +81,6 @@ abstract final class DioClient {
         projectUuidProvider: () async => _projectUuid,
       ),
       HTTPInterceptor(tokenStore: _tokenStore),
-      // Runs after TokenRefreshInterceptor's onError (Dio runs onError in
-      // reverse of interceptor-list order), so it only sees a 401 once
-      // TokenRefreshInterceptor has already tried and failed to refresh.
-      SessionRecoveryInterceptor(
-        dio: dio,
-        tokenStore: _tokenStore,
-        awaitRecovery: () =>
-            _awaitSessionRecovery?.call() ?? Future.value(false),
-      ),
       TokenRefreshInterceptor(
         dio: dio,
         tokenStore: _tokenStore,
@@ -99,6 +90,17 @@ abstract final class DioClient {
         // rejection never throws, so this fires only on transport failures,
         // which the interceptor itself filters out before calling back.
         onRefreshFailed: () => _onSessionExpired?.call(),
+      ),
+      // Dio runs onError in the SAME (FIFO) order interceptors were added,
+      // not reversed -- this must come after TokenRefreshInterceptor so it
+      // only sees a 401 once TokenRefreshInterceptor has already tried and
+      // failed to refresh. Added earlier, it would see the raw 401 first
+      // and retry with the still-stale token before any recovery started.
+      SessionRecoveryInterceptor(
+        dio: dio,
+        tokenStore: _tokenStore,
+        awaitRecovery: () =>
+            _awaitSessionRecovery?.call() ?? Future.value(false),
       ),
     ]);
     return (dio: dio, tokenRefreshService: tokenRefreshService);

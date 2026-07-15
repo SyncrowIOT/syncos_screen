@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:networking/networking.dart';
 
@@ -7,10 +9,12 @@ import 'package:networking/networking.dart';
 /// re-login recovery to settle and retries the original request with the
 /// resulting access token.
 ///
-/// Must be added to `Dio.interceptors` *before* `TokenRefreshInterceptor` --
-/// Dio runs `onError` in reverse of interceptor-list order, so an earlier
-/// position here means this interceptor only sees the error after
+/// Must be added to `Dio.interceptors` *after* `TokenRefreshInterceptor` --
+/// Dio runs `onError` in the same (FIFO) order interceptors were added, so
+/// a later position here means this interceptor only sees the error once
 /// `TokenRefreshInterceptor` has already tried and failed to recover it.
+/// Added earlier, it would see the raw 401 first, before any refresh was
+/// even attempted, and retry immediately with the still-stale token.
 class SessionRecoveryInterceptor extends InterceptorsWrapper {
   factory SessionRecoveryInterceptor({
     required Dio dio,
@@ -71,8 +75,16 @@ final class _SessionRecoveryLogic {
     }
 
     try {
-      final headers = Map<String, dynamic>.from(err.requestOptions.headers);
-      headers['Authorization'] = 'Bearer $access';
+      // Header names are case-sensitive Map keys here, but HTTPInterceptor
+      // sets the original request's auth header under the lowercase
+      // HttpHeaders.authorizationHeader -- setting a differently-cased key
+      // would leave both in the map, and the stale one can still be sent.
+      final headers = Map<String, dynamic>.from(err.requestOptions.headers)
+        ..removeWhere(
+          (key, _) =>
+              key.toLowerCase() == HttpHeaders.authorizationHeader,
+        )
+        ..[HttpHeaders.authorizationHeader] = 'Bearer $access';
       final retryOptions = err.requestOptions.copyWith(
         headers: headers,
         extra: {
