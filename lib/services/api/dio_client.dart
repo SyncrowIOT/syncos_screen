@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
@@ -12,6 +13,7 @@ typedef _DioClientState = ({
 abstract final class DioClient {
   static _DioClientState? _state;
   static String? _projectUuid;
+  static void Function()? _onSessionExpired;
 
   static final _tokenStore = LocalSecureTokenStore();
 
@@ -19,6 +21,20 @@ abstract final class DioClient {
 
   static RemoteTokenRefreshService get tokenRefreshService =>
       _ensureInitialized().tokenRefreshService;
+
+  /// Registers the handler to run when a mid-session token refresh fails in
+  /// an unrecoverable way (missing/invalid refresh token, or a deterministic
+  /// rejection from the refresh endpoint). Typically wired to
+  /// `AuthController.retry` so the app re-authenticates with its default
+  /// credentials, reusing the same flow as app startup.
+  static void configureSessionExpiredHandler(void Function() handler) {
+    _onSessionExpired = handler;
+  }
+
+  /// Test-only escape hatch to invoke the configured session-expired
+  /// handler without going through a real refresh-token failure.
+  @visibleForTesting
+  static void debugInvokeSessionExpiredHandler() => _onSessionExpired?.call();
 
   static _DioClientState _ensureInitialized() {
     return _state ??= _makeDio();
@@ -40,6 +56,7 @@ abstract final class DioClient {
       dio: dio,
       tokenStore: _tokenStore,
       refreshPath: ApiEndpoints.refreshToken,
+      onRefreshFailed: () => _onSessionExpired?.call(),
     );
     dio.interceptors.addAll([
       ProjectUuidInterceptor(
@@ -52,6 +69,7 @@ abstract final class DioClient {
         tokenStore: _tokenStore,
         refreshPath: ApiEndpoints.refreshToken,
         tokenRefreshService: tokenRefreshService,
+        onRefreshFailed: () => _onSessionExpired?.call(),
       ),
     ]);
     return (dio: dio, tokenRefreshService: tokenRefreshService);

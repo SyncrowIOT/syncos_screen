@@ -15,4 +15,16 @@ void main() {
     expect(identical(first, second), isTrue);
     expect(first, isA<RemoteTokenRefreshService>());
   });
+
+  test(
+    'configureSessionExpiredHandler wires a handler debugInvokeSessionExpiredHandler can trigger',
+    () {
+      var callCount = 0;
+      DioClient.configureSessionExpiredHandler(() => callCount++);
+
+      DioClient.debugInvokeSessionExpiredHandler();
+
+      expect(callCount, 1);
+    },
+  );
 }
