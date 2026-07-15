@@ -50,7 +50,7 @@ class _AppState extends State<App> {
         ),
       ).ensureAuthenticated,
     );
-    DioClient.configureSessionExpiredHandler(_authController.retry);
+    DioClient.configureSessionExpiredHandler(_authController.retrySilently);
     _router = buildAppRouter(
       authController: _authController,
       initialDevice: _initialDevice,

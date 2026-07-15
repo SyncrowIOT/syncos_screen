@@ -97,4 +97,48 @@ void main() {
       expect(sut.status, AuthStatus.authenticated);
     },
   );
+
+  test(
+    'retrySilently never transitions through loading and stays '
+    'authenticated on success',
+    () async {
+      final sut = _makeSut(ensureAuthenticated: () async => true);
+      await Future<void>.delayed(Duration.zero);
+      expect(sut.status, AuthStatus.authenticated);
+
+      final statuses = <AuthStatus>[];
+      sut
+        ..addListener(() => statuses.add(sut.status))
+        ..retrySilently();
+      expect(sut.status, AuthStatus.authenticated);
+
+      await Future<void>.delayed(Duration.zero);
+
+      expect(statuses, isNot(contains(AuthStatus.loading)));
+      expect(sut.status, AuthStatus.authenticated);
+    },
+  );
+
+  test(
+    'retrySilently goes straight to error on failure without ever '
+    'showing loading',
+    () async {
+      var shouldSucceed = true;
+      final sut = _makeSut(ensureAuthenticated: () async => shouldSucceed);
+      await Future<void>.delayed(Duration.zero);
+      expect(sut.status, AuthStatus.authenticated);
+
+      shouldSucceed = false;
+      final statuses = <AuthStatus>[];
+      sut
+        ..addListener(() => statuses.add(sut.status))
+        ..retrySilently();
+      expect(sut.status, AuthStatus.authenticated);
+
+      await Future<void>.delayed(Duration.zero);
+
+      expect(statuses, isNot(contains(AuthStatus.loading)));
+      expect(sut.status, AuthStatus.error);
+    },
+  );
 }
