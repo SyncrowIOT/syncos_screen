@@ -4,9 +4,12 @@ include:
 analyzer:
   exclude:
     - lib/l10n/gen/*
+    - "**/firebase_database-12.4.4/**"
 linter:
   rules:
     prefer_single_quotes: true
     public_member_api_docs: false
     sort_pub_dependencies: false
     one_member_abstracts: false
+    lines_longer_than_80_chars: false
+    use_setters_to_change_properties: false

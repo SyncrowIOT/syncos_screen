@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "255001682464",
+    "firebase_url": "https://syncrow-prod-79446.asia-southeast1.firebasedatabase.app/",
+    "project_id": "syncrow-prod-79446",
+    "storage_bucket": "syncrow-prod-79446.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255001682464:android:40e1d92346106850561245",
+        "android_client_info": {
+          "package_name": "com.syncrow.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJ5Wx2Uf8sbmb-AHB8WVfFwEFzrCIOKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255001682464:android:55ba58e8297b3cab561245",
+        "android_client_info": {
+          "package_name": "com.syncrow.mobile.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJ5Wx2Uf8sbmb-AHB8WVfFwEFzrCIOKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255001682464:android:ed8920a3067fb40a561245",
+        "android_client_info": {
+          "package_name": "com.syncrow.mobile.staging"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJ5Wx2Uf8sbmb-AHB8WVfFwEFzrCIOKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255001682464:android:d7c8c99e432d6607561245",
+        "android_client_info": {
+          "package_name": "com.syncrow.syncos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJ5Wx2Uf8sbmb-AHB8WVfFwEFzrCIOKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255001682464:android:e83f1ea16881b855561245",
+        "android_client_info": {
+          "package_name": "com.syncrow.syncosscreen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJ5Wx2Uf8sbmb-AHB8WVfFwEFzrCIOKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

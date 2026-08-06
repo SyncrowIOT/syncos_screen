@@ -1,0 +1,47 @@
+import 'package:power_clamp_device_history/power_clamp_device_history.dart';
+import 'package:syncos_screen/features/devices/power_clamp/domain/power_clamp_energy_reading.dart';
+
+abstract final class PowerClampEnergyCalculator {
+  static List<PowerClampEnergyReading> readings(
+    PowerClampDeviceHistoryLoaded state, {
+    required bool isGeneral,
+    required String phaseType,
+  }) {
+    return state.chartData
+        .map(
+          (item) => PowerClampEnergyReading(
+            date: item.date,
+            consumption: _consumptionFor(
+              item,
+              isGeneral: isGeneral,
+              phaseType: phaseType,
+            ).toDouble(),
+          ),
+        )
+        .toList();
+  }
+
+  static double total(List<PowerClampEnergyReading> readings) {
+    return readings.fold(0, (sum, reading) => sum + reading.consumption);
+  }
+
+  static num _consumptionFor(
+    DeviceEnergyDataModel item, {
+    required bool isGeneral,
+    required String phaseType,
+  }) {
+    if (isGeneral) {
+      return item.energyConsumedKw;
+    }
+    if (phaseType.contains('Phase A')) {
+      return item.energyConsumedA;
+    }
+    if (phaseType.contains('Phase B')) {
+      return item.energyConsumedB;
+    }
+    if (phaseType.contains('Phase C')) {
+      return item.energyConsumedC;
+    }
+    return item.energyConsumedKw;
+  }
+}

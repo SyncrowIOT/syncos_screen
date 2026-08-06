@@ -35,6 +35,23 @@ _\*SyncOS Screen works on iOS, Android, Web, and Windows._
 
 ---
 
+## Local Environment Setup 🔑
+
+Each flavor loads its own env files at startup (see `lib/bootstrap.dart`):
+
+- `.env.development` / `.env.staging` / `.env.production` — tracked config (`ENV_NAME`, `BASE_URL`, `WS_URL`, `SENTRY_DSN`) for each flavor.
+- `.env.local.development` / `.env.local.staging` / `.env.local.production` — gitignored, per-flavor default POC login credentials used by `SessionBootstrapper` for auto-login at startup.
+
+All six files are declared as Flutter assets (see `pubspec.yaml`), so they must all exist on disk before building — Flutter's asset bundler fails the build if a declared asset file is missing. The `.env.development`/`.env.staging`/`.env.production` files are already tracked in git; you only need to create the local ones by copying the example file for each flavor and filling in real POC credentials:
+
+```sh
+$ cp .env.local.example .env.local.development
+$ cp .env.local.example .env.local.staging
+$ cp .env.local.example .env.local.production
+```
+
+---
+
 ## Running Tests 🧪
 
 To run all unit and widget tests use the following command:
