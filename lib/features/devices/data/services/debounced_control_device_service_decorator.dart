@@ -48,6 +48,9 @@ final class DebouncedControlDeviceServiceDecorator
     _debounceTimer?.cancel();
     _pendingRequest?.completer.complete(false);
   }
+
+  @override
+  Stream<ControlDeviceFailure> get failures => _decoratee.failures;
 }
 
 final class _PendingControlRequest {
