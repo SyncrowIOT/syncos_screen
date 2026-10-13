@@ -2,6 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/dio_client.dart';
+import 'package:syncos_screen/services/api/notifying_token_store_decorator.dart';
 
 void main() {
   setUp(() {
@@ -30,11 +31,21 @@ void main() {
 
   test(
     'configureSessionRecoveryWaiter wires a waiter '
-    'debugAwaitSessionRecovery can trigger',
+    'awaitSessionRecovery can trigger',
     () async {
       DioClient.configureSessionRecoveryWaiter(() async => true);
 
-      expect(await DioClient.debugAwaitSessionRecovery(), isTrue);
+      expect(await DioClient.awaitSessionRecovery(), isTrue);
+    },
+  );
+
+  test(
+    'tokenStore returns the same notifying decorator on repeated access',
+    () {
+      final first = DioClient.tokenStore;
+      final second = DioClient.tokenStore;
+      expect(identical(first, second), isTrue);
+      expect(first, isA<NotifyingTokenStoreDecorator>());
     },
   );
 }

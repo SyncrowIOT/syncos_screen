@@ -15,8 +15,6 @@ dependencies:
   fl_chart: ^1.2.0
   flutter:
     sdk: flutter
-  firebase_core: ^4.11.0
-  firebase_database: ^12.4.4
   flutter_bloc: ^9.1.1
   flutter_dotenv: ^6.0.1
   flutter_localizations:
@@ -55,6 +53,11 @@ dependencies:
       url: https://github.com/SyncrowIOT/frontend-microservices.git
       path: packages/auth
       ref: staging
+  socketio_client:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/socketio_client
+      ref: staging
 
 dependency_overrides:
   devices:
@@ -86,6 +89,11 @@ dependency_overrides:
     git:
       url: https://github.com/SyncrowIOT/frontend-microservices.git
       path: packages/auth
+      ref: staging
+  socketio_client:
+    git:
+      url: https://github.com/SyncrowIOT/frontend-microservices.git
+      path: packages/socketio_client
       ref: staging
 
 dev_dependencies:

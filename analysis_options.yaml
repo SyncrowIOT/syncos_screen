@@ -6,7 +6,6 @@ analyzer:
     deprecated_lint: ignore
   exclude:
     - lib/l10n/gen/*
-    - "**/firebase_database-12.4.4/**"
     - build/**
     - android/**
     - ios/**

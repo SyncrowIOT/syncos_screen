@@ -4,6 +4,7 @@ import 'package:networking/networking.dart';
 import 'package:syncos_screen/services/api/api_links_endpoints.dart';
 import 'package:syncos_screen/services/api/http_interceptor.dart';
 import 'package:syncos_screen/services/api/local_secure_token_store.dart';
+import 'package:syncos_screen/services/api/notifying_token_store_decorator.dart';
 import 'package:syncos_screen/services/api/session_recovery_interceptor.dart';
 
 typedef _DioClientState = ({
@@ -17,7 +18,11 @@ abstract final class DioClient {
   static void Function()? _onSessionExpired;
   static Future<bool> Function()? _awaitSessionRecovery;
 
-  static final _tokenStore = LocalSecureTokenStore();
+  static final _tokenStore = NotifyingTokenStoreDecorator(
+    tokenStore: LocalSecureTokenStore(),
+  );
+
+  static NotifyingTokenStoreDecorator get tokenStore => _tokenStore;
 
   static Dio get instance => _ensureInitialized().dio;
 
@@ -47,10 +52,10 @@ abstract final class DioClient {
     _awaitSessionRecovery = waiter;
   }
 
-  /// Test-only escape hatch to invoke the configured session-recovery
-  /// waiter without going through a real request/interceptor chain.
-  @visibleForTesting
-  static Future<bool> debugAwaitSessionRecovery() =>
+  /// Resolves once any in-flight session recovery settles, reporting whether
+  /// the session ended up authenticated. Used by the realtime socket to pick
+  /// up the token from a silent re-login.
+  static Future<bool> awaitSessionRecovery() =>
       _awaitSessionRecovery?.call() ?? Future.value(false);
 
   static _DioClientState _ensureInitialized() {
